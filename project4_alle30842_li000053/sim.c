@@ -90,7 +90,7 @@ void print_action(int address, int size, enum action_type type){
 enum access_type {read_mem, write_mem};
 
 
-void cacheSystem{int address, enum access_type action, stateType* state}{
+int cacheSystem(int address, stateType* state, enum access_type action){
 
 	return 1;
 }
