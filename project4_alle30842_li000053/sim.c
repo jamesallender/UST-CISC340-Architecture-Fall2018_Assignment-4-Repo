@@ -47,7 +47,7 @@ int opcode(int instruction){
     return(instruction>>22);
 }
 
-5int tag(int address){
+int tag(int address){
 	return address;
 }
 
@@ -90,7 +90,7 @@ void print_action(int address, int size, enum action_type type){
 	}
 }
 
-enum access_type {read, write};
+enum access_type {read_mem, write_mem};
 
 int cashSystem{int address, enum access_type action, stateType* state}{
 
