@@ -3,11 +3,11 @@ CFLAGS=`pkg-config --cflags gmodule-2.0`
 
 LDFLAGS=`pkg-config --libs gmodule-2.0`
 
-all: pipelineSimulator.o
-	$(CC) $(CFLAGS) pipelineSimulator.o -o pipelineSimulator $(LDFLAGS)
+all: sim.o
+	$(CC) $(CFLAGS) sim.o -o sim $(LDFLAGS)
 
-pipelineSimulator.o: pipelineSimulator.c
-	$(CC) $(CFLAGS) -c pipelineSimulator.c
+sim.o: sim.c
+	$(CC) $(CFLAGS) -c sim.c
 
 clean:
-	rm pipelineSimulator *.o *.*~ *~
+	rm sim *.o *.*~ *~
