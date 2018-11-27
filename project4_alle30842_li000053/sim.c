@@ -42,6 +42,17 @@ int opcode(int instruction){
     return(instruction>>22);
 }
 
+int set(int address){
+	return address;
+}
+
+int tag(int address){
+	return address;
+}
+
+int blkOffset(int address){
+	return address;
+}
 /*
 * Log the specifics of each cache action.
 *
