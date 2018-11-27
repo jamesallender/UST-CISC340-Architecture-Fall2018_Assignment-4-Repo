@@ -73,46 +73,46 @@ void print_action(int address, int size, enum action_type type){
 	}
 }
 
-void printInstruction(int instr){
-    char opcodeString[10];
-    if (opcode(instr) == ADD) {
-	strcpy(opcodeString, "add");
-    } else if (opcode(instr) == NAND) {
-	strcpy(opcodeString, "nand");
-    } else if (opcode(instr) == LW) {
-	strcpy(opcodeString, "lw");
-    } else if (opcode(instr) == SW) {
-	strcpy(opcodeString, "sw");
-    } else if (opcode(instr) == BEQ) {
-	strcpy(opcodeString, "beq");
-    } else if (opcode(instr) == JALR) {
-	strcpy(opcodeString, "jalr");
-    } else if (opcode(instr) == HALT) {
-	strcpy(opcodeString, "halt");
-    } else if (opcode(instr) == NOOP) {
-	strcpy(opcodeString, "noop");
-    } else {
-	strcpy(opcodeString, "data");
-    }
+// void printInstruction(int instr){
+//     char opcodeString[10];
+//     if (opcode(instr) == ADD) {
+// 		strcpy(opcodeString, "add");
+//     } else if (opcode(instr) == NAND) {
+// 		strcpy(opcodeString, "nand");
+//     } else if (opcode(instr) == LW) {
+// 		strcpy(opcodeString, "lw");
+//     } else if (opcode(instr) == SW) {
+// 		strcpy(opcodeString, "sw");
+//     } else if (opcode(instr) == BEQ) {
+// 		strcpy(opcodeString, "beq");
+//     } else if (opcode(instr) == JALR) {
+// 		strcpy(opcodeString, "jalr");
+//     } else if (opcode(instr) == HALT) {
+// 		strcpy(opcodeString, "halt");
+//     } else if (opcode(instr) == NOOP) {
+// 		strcpy(opcodeString, "noop");
+//     } else {
+// 		strcpy(opcodeString, "data");
+//     }
 
-    printf("%s %d %d %d\n", opcodeString, field0(instr), field1(instr),
-	field2(instr));
-}
+//     printf("%s %d %d %d\n", opcodeString, field0(instr), field1(instr),
+// 	field2(instr));
+// }
 
-void printState(stateType *statePtr){
-    int i;
-	printf("\n@@@\nstate:\n");
-	printf("\tpc %d\n", statePtr->pc);
-	printf("\tmemory:\n");
-	for(i = 0; i < statePtr->numMemory; i++){
-		printf("\t\tmem[%d]=%d\n", i, statePtr->mem[i]);
-	}	
-	printf("\tregisters:\n");
-	for(i = 0; i < NUMREGS; i++){
-		printf("\t\treg[%d]=%d\n", i, statePtr->reg[i]);
-	}
-	printf("end state\n");
-}
+// void printState(stateType *statePtr){
+//     int i;
+// 	printf("\n@@@\nstate:\n");
+// 	printf("\tpc %d\n", statePtr->pc);
+// 	printf("\tmemory:\n");
+// 	for(i = 0; i < statePtr->numMemory; i++){
+// 		printf("\t\tmem[%d]=%d\n", i, statePtr->mem[i]);
+// 	}	
+// 	printf("\tregisters:\n");
+// 	for(i = 0; i < NUMREGS; i++){
+// 		printf("\t\treg[%d]=%d\n", i, statePtr->reg[i]);
+// 	}
+// 	printf("end state\n");
+// }
 
 int signExtend(int num){
 	// convert a 16-bit number into a 32-bit integer
@@ -122,9 +122,9 @@ int signExtend(int num){
 	return num;
 }
 
-void print_stats(int n_instrs){
-	printf("INSTRUCTIONS: %d\n", n_instrs);
-}
+// void print_stats(int n_instrs){
+// 	printf("INSTRUCTIONS: %d\n", n_instrs);
+// }
 
 void run(stateType* state){
 
