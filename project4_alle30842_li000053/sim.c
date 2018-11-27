@@ -19,16 +19,12 @@
 
 #define NOOPINSTRUCTION 0x1c00000
 
-int sets;
-int ways;
-int wordsPerBlock;
-
 typedef struct stateStruct {
     int pc;
 	int mem[NUMMEMORY];
 	int reg[NUMREGS];
 	int numMemory;
-	int cache[sets][ways][wordsPerBlock];
+	int ***cache;
 } stateType;
 
 int field0(int instruction){
@@ -90,9 +86,11 @@ void print_action(int address, int size, enum action_type type){
 	}
 }
 
+
 enum access_type {read_mem, write_mem};
 
-int cashSystem{int address, enum access_type action, stateType* state}{
+
+void cacheSystem{int address, enum access_type action, stateType* state}{
 
 	return 1;
 }
@@ -251,10 +249,6 @@ void run(stateType* state){
 
 int main(int argc, char** argv){
 
-	sets = 1;
-	ways = 1;
-	wordsPerBlock = 1;
-
 	/** Get command line arguments **/
     char* fname;
 
@@ -330,6 +324,13 @@ int main(int argc, char** argv){
 	stateType* state = (stateType*)malloc(sizeof(stateType));
 	
 	state->pc = 0;
+
+	int sets = 1;
+	int ways = 1;
+	int wordsPerBlock = 1;
+	state->cache[sets][ways][wordsPerBlock];
+
+
 	memset(state->mem, 0, NUMMEMORY*sizeof(int));
 	memset(state->reg, 0, NUMREGS*sizeof(int));
 
