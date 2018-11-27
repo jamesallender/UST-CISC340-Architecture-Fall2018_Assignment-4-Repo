@@ -42,6 +42,37 @@ int opcode(int instruction){
     return(instruction>>22);
 }
 
+/*
+* Log the specifics of each cache action.
+*
+* address is the starting word address of the range of data being transferred.
+* size is the size of the range of data being transferred.
+* type specifies the source and destination of the data being transferred.
+*
+* cache_to_processor: reading data from the cache to the processor
+* processor_to_cache: writing data from the processor to the cache
+* memory_to_cache: reading data from the memory to the cache
+* cache_to_memory: evicting cache data by writing it to the memory
+* cache_to_nowhere: evicting cache data by throwing it away
+*/
+enum action_type {cache_to_processor, processor_to_cache, memory_to_cache, cache_to_memory,
+cache_to_nowhere};
+
+void print_action(int address, int size, enum action_type type){
+	printf("transferring word [%i-%i] ", address, address + size - 1);
+	if (type == cache_to_processor) {
+		printf("from the cache to the processor\n");
+	} else if (type == processor_to_cache) {
+		printf("from the processor to the cache\n");
+	} else if (type == memory_to_cache) {
+		printf("from the memory to the cache\n");
+	} else if (type == cache_to_memory) {
+		printf("from the cache to the memory\n");
+	} else if (type == cache_to_nowhere) {
+		printf("from the cache to nowhere\n");
+	}
+}
+
 void printInstruction(int instr){
     char opcodeString[10];
     if (opcode(instr) == ADD) {
