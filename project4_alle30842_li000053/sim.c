@@ -153,7 +153,7 @@ void run(stateType* state){
     while(1){
 		total_instrs++;
 
-		printState(state);
+		//printState(state);
 		
 		// Instruction Fetch
 		instr = state->mem[state->pc];
@@ -230,7 +230,7 @@ void run(stateType* state){
 			}
 		}	
     } // While
-	print_stats(total_instrs);
+	// print_stats(total_instrs);
 }
 
 int main(int argc, char** argv){
