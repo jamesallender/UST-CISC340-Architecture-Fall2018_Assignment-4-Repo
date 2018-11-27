@@ -19,11 +19,16 @@
 
 #define NOOPINSTRUCTION 0x1c00000
 
+int sets;
+int ways;
+int wordsPerBlock;
+
 typedef struct stateStruct {
     int pc;
 	int mem[NUMMEMORY];
 	int reg[NUMREGS];
 	int numMemory;
+	int cache[sets][ways][wordsPerBlock];
 } stateType;
 
 int field0(int instruction){
@@ -42,17 +47,18 @@ int opcode(int instruction){
     return(instruction>>22);
 }
 
-int set(int address){
+5int tag(int address){
 	return address;
 }
 
-int tag(int address){
+int set(int address){
 	return address;
 }
 
 int blkOffset(int address){
 	return address;
 }
+
 /*
 * Log the specifics of each cache action.
 *
@@ -83,6 +89,16 @@ void print_action(int address, int size, enum action_type type){
 		printf("from the cache to nowhere\n");
 	}
 }
+
+enum access_type {read, write};
+
+int cashSystem{int address, enum access_type action, stateType* state}{
+
+	return 1;
+}
+
+
+
 
 // void printInstruction(int instr){
 //     char opcodeString[10];
@@ -234,6 +250,10 @@ void run(stateType* state){
 }
 
 int main(int argc, char** argv){
+
+	sets = 1;
+	ways = 1;
+	wordsPerBlock = 1;
 
 	/** Get command line arguments **/
     char* fname;
