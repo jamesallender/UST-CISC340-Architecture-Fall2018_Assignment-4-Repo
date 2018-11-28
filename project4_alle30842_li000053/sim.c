@@ -35,6 +35,9 @@ typedef struct stateStruct {
 	int reg[NUMREGS];
 	int numMemory;
 	blockType **cacheArr;
+	int sets;
+	int ways;
+	int wordsPerBlock;
 } stateType;
 
 
@@ -101,6 +104,7 @@ void print_action(int address, int size, enum action_type type){
 enum access_type {read_mem, write_mem};
 
 int cacheSystem(int address, stateType* state, enum access_type action){
+	state->cacheArr
 
 	return 1;
 }
@@ -265,19 +269,31 @@ int main(int argc, char** argv){
 	opterr = 0;
 
 	int cin = 0;
+	int blockSizeInWords;
+	int numSets;
+	int associativity;
 
-	while((cin = getopt(argc, argv, "i:")) != -1){
+	while((cin = getopt(argc, argv, "f:b:s:a:")) != -1){
 		switch(cin)
 		{
-			case 'i':
+			case 'f':
 				fname=(char*)malloc(strlen(optarg));
 				fname[0] = '\0';
 
 				strncpy(fname, optarg, strlen(optarg)+1);
 				printf("FILE: %s\n", fname);
 				break;
+			case 'b':
+				blockSizeInWords = optarg;
+				break;
+			case 's':
+				numSets = optarg;
+				break;
+			case 'a':
+				associativity = optarg;
+				break;
 			case '?':
-				if(optopt == 'i'){
+				if(optopt == 'f'){
 					printf("Option -%c requires an argument.\n", optopt);
 				}
 				else if(isprint(optopt)){
@@ -335,23 +351,24 @@ int main(int argc, char** argv){
 	stateType* state = (stateType*)malloc(sizeof(stateType));
 	state->pc = 0;
 
-	int sets = 1; // calculate this value
-	int ways = 1; // calculate this value
-	int wordsPerBlock = 1; // calculate this value
+
+	state->sets = numSets;
+	state->ways = associativity;
+	state->wordsPerBlock = blockSizeInWords;
 
 	// Alocate our cache array the size of the number of sets/lines we have contaning pointers to the array of blocks in each set
 	state->cacheArr = malloc(sets * sizeof(blockType*));
 
 	// Alocate the size of the array of the sub arrays contaning the pointers to the block structs
-	for (int i = 0; i < sets; i++ ){
+	for (int i = 0; i < state->sets; i++ ){
 		state->cacheArr[i] = (blockType*)malloc(ways * sizeof(blockType*));
 
 		// Alocate the structs pointed to by each pointer of the sub array
-		for (int k = 0; k < ways; k++ ){
+		for (int k = 0; k < state->ways; k++ ){
 			blockType block;
 			block.dirtyBit = clean;
 			block.validBit = invalid;
-			block.data = (int*)malloc(wordsPerBlock * sizeof(int));
+			block.data = (int*)malloc(state->wordsPerBlock * sizeof(int));
 			for (int l = 0; l < wordsPerBlock; l++ ){
 				block.data[l] = 0;
 			}
