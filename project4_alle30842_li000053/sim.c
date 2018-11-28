@@ -340,7 +340,7 @@ int main(int argc, char** argv){
 	int wordsPerBlock = 1; // calculate this value
 
 	// Alocate our cache array the size of the number of sets/lines we have contaning pointers to the array of blocks in each set
-	state->cacheArr = (blockType**)malloc(sets * sizeof(blockType*));
+	state->cacheArr = malloc(sets * sizeof(blockType*));
 
 	// Alocate the size of the array of the sub arrays contaning the pointers to the block structs
 	for (int i = 0; i < sets; i++ ){
