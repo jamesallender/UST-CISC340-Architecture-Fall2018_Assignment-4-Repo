@@ -19,13 +19,24 @@
 
 #define NOOPINSTRUCTION 0x1c00000
 
+enum dirty_bit {dirty, clean};
+enum valid_bit {valid, invalid};
+
+typedef struct blockStruct {
+    enum dirty_bit dirtyBit;
+	enum valid_bit validBit;
+	int tag;
+	int *data;
+} blockType;
+
 typedef struct stateStruct {
     int pc;
 	int mem[NUMMEMORY];
 	int reg[NUMREGS];
 	int numMemory;
-	int ***cache;
+	blockType **cacheArr;
 } stateType;
+
 
 int field0(int instruction){
     return( (instruction>>19) & 0x7);
@@ -88,7 +99,6 @@ void print_action(int address, int size, enum action_type type){
 
 
 enum access_type {read_mem, write_mem};
-
 
 int cacheSystem(int address, stateType* state, enum access_type action){
 
@@ -321,14 +331,33 @@ int main(int argc, char** argv){
 	// reset fp to the beginning of the file
 	rewind(fp);
 
+	// Instantiate the state and the cache 2d array and its structs
 	stateType* state = (stateType*)malloc(sizeof(stateType));
-	
 	state->pc = 0;
 
-	int sets = 1;
-	int ways = 1;
-	int wordsPerBlock = 1;
-	state->cache[sets][ways][wordsPerBlock];
+	int sets = 1; // calculate this value
+	int ways = 1; // calculate this value
+	int wordsPerBlock = 1; // calculate this value
+
+	// Alocate our cache array the size of the number of sets/lines we have contaning pointers to the array of blocks in each set
+	state->cacheArr = (blockType*)malloc(sets * sizeof(blockType*))
+
+	// Alocate the size of the array of the sub arrays contaning the pointers to the block structs
+	for ( i = 0; i < sets; i++ ){
+		state->cacheArr[i] = (blockType*)malloc(ways * sizeof(blockType*))
+
+		// Alocate the structs pointed to by each pointer of the sub array
+		for (k = 0; k < ways; k++ ){
+			blockType* block = (blockType*)malloc(sizeof(blockType));
+			block->dirtyBit = clean;
+			block->validBit = invalid;
+			block->data = (int*)malloc(wordsPerBlock * sizeof(int));
+			for (l = 0; l < wordsPerBlock; l++ ){
+				block->data[l] = 0;
+			}
+			state->cacheArr[i][k] = block;
+		}
+	}
 
 
 	memset(state->mem, 0, NUMMEMORY*sizeof(int));
