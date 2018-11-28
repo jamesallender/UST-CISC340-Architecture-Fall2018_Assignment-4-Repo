@@ -34,7 +34,7 @@ typedef struct stateStruct {
 	int mem[NUMMEMORY];
 	int reg[NUMREGS];
 	int numMemory;
-	blockType ***cacheArr;
+	blockType **cacheArr;
 } stateType;
 
 
@@ -348,12 +348,12 @@ int main(int argc, char** argv){
 
 		// Alocate the structs pointed to by each pointer of the sub array
 		for (int k = 0; k < ways; k++ ){
-			blockType* block = (blockType*)malloc(sizeof(blockType));
-			block->dirtyBit = clean;
-			block->validBit = invalid;
-			block->data = (int*)malloc(wordsPerBlock * sizeof(int));
+			blockType block = (blockType)malloc(sizeof(blockType));
+			block.dirtyBit = clean;
+			block.validBit = invalid;
+			block.data = (int*)malloc(wordsPerBlock * sizeof(int));
 			for (int l = 0; l < wordsPerBlock; l++ ){
-				block->data[l] = 0;
+				block.data[l] = 0;
 			}
 			state->cacheArr[i][k] = block;
 		}
