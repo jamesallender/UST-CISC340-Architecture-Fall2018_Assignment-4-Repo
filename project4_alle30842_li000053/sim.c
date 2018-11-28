@@ -104,7 +104,7 @@ void print_action(int address, int size, enum action_type type){
 enum access_type {read_mem, write_mem};
 
 int cacheSystem(int address, stateType* state, enum access_type action){
-	state->cacheArr
+	state->cacheArr = 0; // change this line
 
 	return 1;
 }
