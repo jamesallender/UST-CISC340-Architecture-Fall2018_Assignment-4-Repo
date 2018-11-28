@@ -348,7 +348,7 @@ int main(int argc, char** argv){
 
 		// Alocate the structs pointed to by each pointer of the sub array
 		for (int k = 0; k < ways; k++ ){
-			blockType block = (blockType)malloc(sizeof(blockType));
+			blockType block;
 			block.dirtyBit = clean;
 			block.validBit = invalid;
 			block.data = (int*)malloc(wordsPerBlock * sizeof(int));
