@@ -284,13 +284,13 @@ int main(int argc, char** argv){
 				printf("FILE: %s\n", fname);
 				break;
 			case 'b':
-				blockSizeInWords = optarg;
+				blockSizeInWords = (int)optarg;
 				break;
 			case 's':
-				numSets = optarg;
+				numSets = (int)optarg;
 				break;
 			case 'a':
-				associativity = optarg;
+				associativity = (int)optarg;
 				break;
 			case '?':
 				if(optopt == 'f'){
