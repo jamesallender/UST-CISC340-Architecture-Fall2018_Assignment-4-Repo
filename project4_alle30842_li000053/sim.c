@@ -355,7 +355,7 @@ int main(int argc, char** argv){
 			for (int l = 0; l < wordsPerBlock; l++ ){
 				block->data[l] = 0;
 			}
-			state->cacheArr[i][k] = block;
+			state->cacheArr[i][k] = *block;
 		}
 	}
 
