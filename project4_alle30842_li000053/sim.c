@@ -343,16 +343,16 @@ int main(int argc, char** argv){
 	state->cacheArr = (blockType**)malloc(sets * sizeof(blockType*));
 
 	// Alocate the size of the array of the sub arrays contaning the pointers to the block structs
-	for ( i = 0; i < sets; i++ ){
+	for (int i = 0; i < sets; i++ ){
 		state->cacheArr[i] = (blockType*)malloc(ways * sizeof(blockType*));
 
 		// Alocate the structs pointed to by each pointer of the sub array
-		for (k = 0; k < ways; k++ ){
+		for (int k = 0; k < ways; k++ ){
 			blockType* block = (blockType*)malloc(sizeof(blockType));
 			block->dirtyBit = clean;
 			block->validBit = invalid;
 			block->data = (int*)malloc(wordsPerBlock * sizeof(int));
-			for (l = 0; l < wordsPerBlock; l++ ){
+			for (int l = 0; l < wordsPerBlock; l++ ){
 				block->data[l] = 0;
 			}
 			state->cacheArr[i][k] = block;
