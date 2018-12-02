@@ -235,13 +235,13 @@ int alocateCacheLine(int address, stateType* state){
 	if (state->cacheArr[set][lru].dirtyBit == dirty){
 		// write each word in the block to memory
 		for (int l = 0; l < state->wordsPerBlock; l++ ){
-			state->mem[getAddressBase(address) + l] = state->cacheArr[set][lru].data[l];
+			state->mem[getAddressBase(address, state) + l] = state->cacheArr[set][lru].data[l];
 		}	
 	}
 	return lru;
 }
 
-int getAddressBase(int address){
+int getAddressBase(int address, stateType* state){
 	int words_per_blk = state->wordsPerBlock;
 	int bits_needed = log(words_per_blk) / log(2);
 	int mask = 0;
@@ -280,7 +280,7 @@ void memToCache(int address, stateType* state){
 	newBlock.tag = tag;
 
 	for(int i=0; i<state->wordsPerBlock; i++){
-		newBlock.data[i] = state->mem[getAddressBase(address) + i];
+		newBlock.data[i] = state->mem[getAddressBase(address, state) + i];
 	}
 
 	printf("**** Write from MEM to CACHE ****\n");
