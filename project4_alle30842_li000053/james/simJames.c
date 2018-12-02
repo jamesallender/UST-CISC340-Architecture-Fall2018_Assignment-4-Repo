@@ -197,25 +197,49 @@ void printCache(stateType* state){
 	}
 }
 
+// return 1 if the given address is in cache otherwise -1
 int searchCache(int address, stateType* state){
-	// loop through all sets of cache
 	int set = getSet(address, state);
-	int blockOffset = getBlkOffset(address, state);
 	int tag = getTag(address, state);
-		// loop through all the ways of a set
+	// loop through all the ways of the address's set
 	for (int k = 0; k < state->ways; k++ ){
-		if (getDirtyBitName(state->cacheArr[set][k].tag == tag)){
+		// if the tag is found in the set return 1
+		if (state->cacheArr[set][k].tag == tag){
 			return 1;
 		}
 	}	
+	// otherwise return -1
 	return -1;
 }
 
-int alocateCacheLine(int address, stateType* state, enum access_type action){
-	state->cacheArr = 0; // change this line
-
-	return 1;
+// Returns the way in the cach set corisponding to the given address that can be overwriten
+int alocateCacheLine(int address, stateType* state){
+	int set = getSet(address, state);
+	int lru = 0;
+	// loop through all the ways of a set
+	for (int k = 0; k < state->ways; k++ ){
+		// If the current way is invalid return it to be overwriten
+		if (state->cacheArr[set][k].validBit == invalid){
+			return k;
+		}
+		// If the current line's cyclesSinceLastUse is greater than the current 
+		// lru's cyclesSinceLastUse change the lru to the current way
+		if (state->cacheArr[set][k].cyclesSinceLastUse > state->cacheArr[set][lru].cyclesSinceLastUse){
+			lru = k;
+		}
+	}	
+	// check if the lru way needs to be written back to memory
+	if (state->cacheArr[set][lru].dirtyBit == dirty){
+		// write each word in the block to memory
+		for (int l = 0; l < state->wordsPerBlock; l++ ){
+			state.mem[address + l] = state->cacheArr[set][lru].data[l];
+		}	
+	}
+	return lru;
 }
+
+
+int blockOffset = getBlkOffset(address, state);
 
 int cacheSystem(int address, stateType* state, enum access_type action){
 	state->cacheArr = 0; // change this line
