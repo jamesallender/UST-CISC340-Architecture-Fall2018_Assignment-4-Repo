@@ -77,7 +77,7 @@ typedef struct stateStruct {
 
 // Function Headers
 int searchCache(int address, stateType* state);
-int alocateCacheLine(int address, stateType* state, enum access_type action);
+int alocateCacheLine(int address, stateType* state);
 int cacheSystem(int address, stateType* state, enum access_type action);
 int signExtend(int num);
 void run(stateType* state);
