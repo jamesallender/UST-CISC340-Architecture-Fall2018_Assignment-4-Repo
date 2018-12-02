@@ -287,16 +287,22 @@ int main(int argc, char** argv){
 				fname[0] = '\0';
 
 				strncpy(fname, optarg, strlen(optarg)+1);
-				printf("FILE: %s\n", fname);
+				printf("File: %s\n", fname);
 				break;
 			case 'b':
-				blockSizeInWords = (int)*optarg;
+				blockSizeInWords = *optarg - '0';
+				printf("blockSizeInWords: %d\n", blockSizeInWords);
+				// printf("blockSizeInWords: %s\n", blockSizeInWords);
 				break;
 			case 's':
-				numSets = (int)*optarg;
+				numSets = *optarg - '0';
+				printf("numSets: %d\n", numSets);
+				// printf("numSets: %s\n", numSets);
 				break;
 			case 'a':
-				associativity = (int)*optarg;
+				associativity = *optarg - '0';
+				printf("associativity: %d\n", associativity);
+				// printf("associativity: %s\n", associativity);
 				break;
 			case '?':
 				if(optopt == 'f'){
@@ -311,6 +317,7 @@ int main(int argc, char** argv){
 				}
 				break;
 			default:
+				printf("aborting\n");
 				abort();
 		}
 	}

@@ -172,7 +172,6 @@ int signExtend(int num){
 // }
 
 void run(stateType* state){
-	printf("top of run!\n");
 
 	// Reused variables;
 	int instr = 0;
@@ -288,7 +287,7 @@ int main(int argc, char** argv){
 				fname[0] = '\0';
 
 				strncpy(fname, optarg, strlen(optarg)+1);
-				printf("FILE: %s\n", fname);
+				printf("File: %s\n", fname);
 				break;
 			case 'b':
 				blockSizeInWords = *optarg - '0';
