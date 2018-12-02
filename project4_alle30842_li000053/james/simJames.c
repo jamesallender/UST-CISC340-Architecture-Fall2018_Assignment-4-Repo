@@ -215,7 +215,7 @@ int searchCache(int address, stateType* state){
 	// loop through all the ways of the address's set
 	for (int k = 0; k < state->ways; k++ ){
 		// if the tag is found in the set return 1
-		if (state->cacheArr[set][k].tag == tag){
+		if (state->cacheArr[set][k].validBit == valid && state->cacheArr[set][k].tag == tag){
 			return 1;
 		}
 	}	
@@ -291,31 +291,31 @@ int memToCache(int address, stateType* state){
 		newBlock.data[i] = state->mem[getAddressBase(address, state) + i];
 	}
 
-	printf("**** Write from MEM to CACHE ****\n");
-	printf("OLD Block\n");
-	printf("dirtyBit: %s\n", getDirtyBitName(state->cacheArr[set][way_to_write].dirtyBit));
-	printf("validBit: %s\n", getValidBitName(state->cacheArr[set][way_to_write].validBit));
-	printf("data:\t");
-	for (int l = 0; l < state->wordsPerBlock; l++ ){
-		printf("%d", state->cacheArr[set][way_to_write].data[l]);
-		// printf("%p",(void *)&state->cacheArr[i][k].data[l]);
-		if (l != state->wordsPerBlock-1){
-			printf(" | ");
-		}
-	}
+	// printf("**** Write from MEM to CACHE ****\n");
+	// printf("OLD Block\n");
+	// printf("dirtyBit: %s\n", getDirtyBitName(state->cacheArr[set][way_to_write].dirtyBit));
+	// printf("validBit: %s\n", getValidBitName(state->cacheArr[set][way_to_write].validBit));
+	// printf("data:\t");
+	// for (int l = 0; l < state->wordsPerBlock; l++ ){
+	// 	printf("%d", state->cacheArr[set][way_to_write].data[l]);
+	// 	// printf("%p",(void *)&state->cacheArr[i][k].data[l]);
+	// 	if (l != state->wordsPerBlock-1){
+	// 		printf(" | ");
+	// 	}
+	// }
 
-	printf("**** Write from MEM to CACHE ****\n");
-	printf("NEW Block\n");
-	printf("dirtyBit: %s\n", getDirtyBitName(state->cacheArr[set][way_to_write].dirtyBit));
-	printf("validBit: %s\n", getValidBitName(state->cacheArr[set][way_to_write].validBit));
-	printf("data:\t");
-	for (int l = 0; l < state->wordsPerBlock; l++ ){
-		printf("%d", state->cacheArr[set][way_to_write].data[l]);
-		// printf("%p",(void *)&state->cacheArr[i][k].data[l]);
-		if (l != state->wordsPerBlock-1){
-			printf(" | ");
-		}
-	}
+	// printf("**** Write from MEM to CACHE ****\n");
+	// printf("NEW Block\n");
+	// printf("dirtyBit: %s\n", getDirtyBitName(state->cacheArr[set][way_to_write].dirtyBit));
+	// printf("validBit: %s\n", getValidBitName(state->cacheArr[set][way_to_write].validBit));
+	// printf("data:\t");
+	// for (int l = 0; l < state->wordsPerBlock; l++ ){
+	// 	printf("%d", state->cacheArr[set][way_to_write].data[l]);
+	// 	// printf("%p",(void *)&state->cacheArr[i][k].data[l]);
+	// 	if (l != state->wordsPerBlock-1){
+	// 		printf(" | ");
+	// 	}
+	// }
 
 
 	state->cacheArr[set][way_to_write] = newBlock;
