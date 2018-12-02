@@ -138,6 +138,7 @@ void print_action(int address, int size, enum action_type type){
 
 void printCache(stateType* state){
 	// loop through all sets of cache
+	printf("\nCache Contents:\n");
 	for (int i = 0; i < state->sets; i++ ){
 		printf("Set: %d\n", i);
 		// loop through all the ways of a set
@@ -148,11 +149,11 @@ void printCache(stateType* state){
 			printf("data:\t");
 			for (int l = 0; l < state->wordsPerBlock; l++ ){
 				printf("%d", state->cacheArr[i][k].data[l]); 
-				if (l != state->wordsPerBlock){
+				if (l != state->wordsPerBlock-1){
 					printf(" | "); 
 				}
 			}
-			printf("\n");
+			printf("\n\n");
 		}
 	}
 }
