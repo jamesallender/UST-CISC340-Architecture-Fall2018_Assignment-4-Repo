@@ -342,17 +342,17 @@ int main(int argc, char** argv){
 				printf("File: %s\n", fname);
 				break;
 			case 'b':
-				blockSizeInWords = *optarg - '0';
+				blockSizeInWords = atoi(optarg);
 				printf("blockSizeInWords: %d\n", blockSizeInWords);
 				// printf("blockSizeInWords: %s\n", blockSizeInWords);
 				break;
 			case 's':
-				numSets = *optarg - '0';
+				numSets = atoi(optarg);
 				printf("numSets: %d\n", numSets);
 				// printf("numSets: %s\n", numSets);
 				break;
 			case 'a':
-				associativity = *optarg - '0';
+				associativity = atoi(optarg);
 				printf("associativity: %d\n", associativity);
 				// printf("associativity: %s\n", associativity);
 				break;
