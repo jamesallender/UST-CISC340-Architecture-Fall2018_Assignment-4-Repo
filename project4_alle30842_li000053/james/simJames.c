@@ -19,20 +19,14 @@
 
 #define NOOPINSTRUCTION 0x1c00000
 
-int seatchThroughCache(int address, stateType* state);
-int alocateCacheLine(int address, stateType* state, enum access_type action);
-int cacheSystem(int address, stateType* state, enum access_type action);
-int signExtend(int num);
-void run(stateType* state);
-void print_action(int address, int size, enum action_type type);
-void printCache(stateType* state);
-
+// Enums
 enum dirty_bit {dirty, clean};
 enum valid_bit {valid, invalid};
 enum action_type {cache_to_processor, processor_to_cache, memory_to_cache, cache_to_memory,
 cache_to_nowhere};
 enum access_type {read_mem, write_mem};
 
+// Structures
 typedef struct blockStruct {
     enum dirty_bit dirtyBit;
 	enum valid_bit validBit;
@@ -51,7 +45,16 @@ typedef struct stateStruct {
 	int wordsPerBlock;
 } stateType;
 
+// Function Headers
+int seatchThroughCache(int address, stateType* state);
+int alocateCacheLine(int address, stateType* state, enum access_type action);
+int cacheSystem(int address, stateType* state, enum access_type action);
+int signExtend(int num);
+void run(stateType* state);
+void print_action(int address, int size, enum action_type type);
+void printCache(stateType* state);
 
+// Functions
 int field0(int instruction){
     return( (instruction>>19) & 0x7);
 }
