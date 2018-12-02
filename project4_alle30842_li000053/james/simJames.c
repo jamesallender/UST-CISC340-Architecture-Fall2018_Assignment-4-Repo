@@ -282,9 +282,10 @@ int main(int argc, char** argv){
 
 	while((cin = getopt(argc, argv, "f:b:s:a:")) != -1){
 		printf("cheking args:\n");
+		printf("args: %s\n", cin);
+		printf("args: %d\n", cin);
 		switch(cin)
 		{
-			printf("args: %s\n", cin);
 			case 'f':
 				fname=(char*)malloc(strlen(optarg));
 				fname[0] = '\0';
@@ -295,14 +296,17 @@ int main(int argc, char** argv){
 			case 'b':
 				blockSizeInWords = (int)*optarg;
 				printf("blockSizeInWords: %d\n", blockSizeInWords);
+				printf("blockSizeInWords: %s\n", blockSizeInWords);
 				break;
 			case 's':
 				numSets = (int)*optarg;
 				printf("numSets: %d\n", numSets);
+				printf("numSets: %s\n", numSets);
 				break;
 			case 'a':
 				associativity = (int)*optarg;
 				printf("associativity: %d\n", associativity);
+				printf("associativity: %s\n", associativity);
 				break;
 			case '?':
 				if(optopt == 'f'){
