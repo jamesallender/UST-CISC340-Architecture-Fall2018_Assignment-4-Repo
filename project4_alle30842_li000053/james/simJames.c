@@ -83,6 +83,7 @@ int signExtend(int num);
 void run(stateType* state);
 void print_action(int address, int size, enum action_type type);
 void printCache(stateType* state);
+int incrementCyclesSinceLastUse(stateType* state);
 
 // Functions
 int field0(int instruction){
@@ -238,6 +239,16 @@ int alocateCacheLine(int address, stateType* state){
 	return lru;
 }
 
+// increment the cyclesSinceLastUse for all items in cache
+int incrementCyclesSinceLastUse(stateType* state){
+	// loop through all sets of cache
+	for (int i = 0; i < state->sets; i++ ){
+		// loop through all the ways of a set
+		for (int k = 0; k < state->ways; k++ ){
+			state->cacheArr[i][k].cyclesSinceLastUse = state->cacheArr[i][k].cyclesSinceLastUse + 1;
+		}
+	}
+}
 
 int blockOffset = getBlkOffset(address, state);
 
@@ -455,6 +466,7 @@ int main(int argc, char** argv){
 	}
 
 	printCache(state);
+	printf("%d\n", alocateCacheLine(0,state));
 
 	memset(state->mem, 0, NUMMEMORY*sizeof(int));
 	memset(state->reg, 0, NUMREGS*sizeof(int));
