@@ -108,12 +108,11 @@ int seatchThroughCache(int address, stateType* state){
 	for (int i = 0; i < state->sets; i++ ){
 		// loop through all the ways of a set
 		for (int k = 0; k < state->ways; k++ ){
-			state->cacheArr[i][k]->dirtyBit;
-			printf("dirtyBit: %d\n", state->cacheArr[k]->dirtyBit);
-			printf("validBit: %d\n", state->cacheArr[k]->validBit);
+			printf("dirtyBit: %d\n", state->cacheArr[i][k].dirtyBit);
+			printf("validBit: %d\n", state->cacheArr[i][k].validBit);
 			printf("data:\n");
 			for (int l = 0; l < state->wordsPerBlock; l++ ){
-				printf("\t%d | ", state->cacheArr[k]->data[l]);
+				printf("\t%d | ", state->cacheArr[i][k].data[l]);
 			}
 		}
 	}
