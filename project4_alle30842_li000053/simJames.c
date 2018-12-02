@@ -288,19 +288,19 @@ int main(int argc, char** argv){
 
 				strncpy(fname, optarg, strlen(optarg)+1);
 				printf("FILE: %s\n", fname);
-				break;
+				// break;
 			case 'b':
 				blockSizeInWords = (int)*optarg;
 				printf("blockSizeInWords: %d\n", blockSizeInWords);
-				break;
+				// break;
 			case 's':
 				numSets = (int)*optarg;
 				printf("numSets: %d\n", numSets);
-				break;
+				// break;
 			case 'a':
 				associativity = (int)*optarg;
 				printf("associativity: %d\n", associativity);
-				break;
+				// break;
 			case '?':
 				if(optopt == 'f'){
 					printf("Option -%c requires an argument.\n", optopt);
@@ -314,6 +314,7 @@ int main(int argc, char** argv){
 				}
 				break;
 			default:
+				printf("aborting\n");
 				abort();
 		}
 	}
