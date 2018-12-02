@@ -114,8 +114,10 @@ void print_action(int address, int size, enum action_type type){
 void printCache(stateType* state){
 	// loop through all sets of cache
 	for (int i = 0; i < state->sets; i++ ){
+		printf("Set: %d\n", i);
 		// loop through all the ways of a set
 		for (int k = 0; k < state->ways; k++ ){
+			printf("Way: %d\n", k);
 			printf("dirtyBit: %d\n", state->cacheArr[i][k].dirtyBit);
 			printf("validBit: %d\n", state->cacheArr[i][k].validBit);
 			printf("data:\n");
