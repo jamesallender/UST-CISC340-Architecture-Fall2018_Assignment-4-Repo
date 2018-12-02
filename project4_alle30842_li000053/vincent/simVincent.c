@@ -197,7 +197,7 @@ int searchCache(int address, stateType* state){
 	int tag = getTag(address, state);
 		// loop through all the ways of a set
 	for (int k = 0; k < state->ways; k++ ){
-		if (getDirtyBitName(state->cacheArr[set][k].tag == tag)){
+		if (state->cacheArr[set][k].tag == tag){
 			return 1;
 		}
 	}	
@@ -210,8 +210,82 @@ int alocateCacheLine(int address, stateType* state, enum access_type action){
 	return 1;
 }
 
+void memToCache(int address, stateType* state){
+	int tag = getTag(address);
+	int set = getSet(address);
+	int blkOffset = getBlkOffset(address);
+
+	int way_to_write = alocateCacheLine(address, state);
+
+	blockType newBlock;
+	newBlock.dirtyBit = clean;
+	newBlock.validBit = valid_bit;
+	newBlock.tag = tag;
+
+	for(int i=0; i<state->wordsPerBlock; i++){
+		newBlock.data[i] = state->mem[address+i];
+	}
+
+	printf("**** Write from MEM to CACHE ****\n");
+	printf("OLD Block\n");
+	printf("dirtyBit: %s\n", state->cacheArr[set][way_to_write].dirtyBit));
+	printf("validBit: %s\n", state->cacheArr[set][way_to_write].validBit));
+	printf("data:\t");
+	for (int l = 0; l < state->wordsPerBlock; l++ ){
+		printf("%d", state->cacheArr[set][way_to_write].data[l]);
+		// printf("%p",(void *)&state->cacheArr[i][k].data[l]);
+		if (l != state->wordsPerBlock-1){
+			printf(" | ");
+		}
+	}
+
+	printf("**** Write from MEM to CACHE ****\n");
+	printf("NEW Block\n");
+	printf("dirtyBit: %s\n", state->cacheArr[set][way_to_write].dirtyBit));
+	printf("validBit: %s\n", state->cacheArr[set][way_to_write].validBit));
+	printf("data:\t");
+	for (int l = 0; l < state->wordsPerBlock; l++ ){
+		printf("%d", state->cacheArr[set][way_to_write].data[l]);
+		// printf("%p",(void *)&state->cacheArr[i][k].data[l]);
+		if (l != state->wordsPerBlock-1){
+			printf(" | ");
+		}
+	}
+
+
+	state->cacheArr[set][way_to_write] = newBlock;
+}
+
 int cacheSystem(int address, stateType* state, enum access_type action){
-	state->cacheArr = 0; // change this line
+
+	int tag = getTag(address, state);
+	int set = getSet(address, state);
+	int blkOffset = getBlkOffset(address, state);
+
+
+	//processor read from mem
+	if(action == read_mem){
+
+		int isInCache = searchCache(address, state);
+
+
+		if(isInCache == 1){
+			// read hit
+			for(int i=0; i < state->ways; i++){
+				if(state->cacheArr[set][i].tag == tag){
+					return state->cacheArr[set][i].data[blkOffset];
+				}
+			}
+		}else{
+			// read miss
+
+		}
+	}
+
+	//process write to mem
+	if(action == write_mem){
+
+	}
 
 	return 1;
 }
