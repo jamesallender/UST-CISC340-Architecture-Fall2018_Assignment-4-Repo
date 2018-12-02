@@ -172,6 +172,7 @@ int signExtend(int num){
 // }
 
 void run(stateType* state){
+	printf("top of run\n");
 
 	// Reused variables;
 	int instr = 0;
