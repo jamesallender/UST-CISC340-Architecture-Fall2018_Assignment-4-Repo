@@ -250,7 +250,7 @@ int incrementCyclesSinceLastUse(stateType* state){
 	}
 }
 
-int blockOffset = getBlkOffset(address, state);
+// int blockOffset = getBlkOffset(address, state);
 
 int cacheSystem(int address, stateType* state, enum access_type action){
 	state->cacheArr = 0; // change this line
