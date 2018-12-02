@@ -57,7 +57,7 @@ int getSet(int address, stateType* state);
 int getBlkOffset(int address, stateType* state);
 int searchCache(int address, stateType* state);
 int alocateCacheLine(int address, stateType* state);
-int cacheSystem(int address, stateType* state, enum access_type action);
+int cacheSystem(int address, stateType* state, enum access_type action, int write_value);
 int signExtend(int num);
 void run(stateType* state);
 void print_action(int address, int size, enum action_type type);
@@ -319,6 +319,8 @@ int memToCache(int address, stateType* state){
 
 
 	state->cacheArr[set][way_to_write] = newBlock;
+
+	print_action(address, state->wordsPerBlock, memory_to_cache);
 	return way_to_write;
 }
 
@@ -339,10 +341,26 @@ int cacheToMem(int address, stateType* state){
 	}
 
 	state->cacheArr[set][way_to_write] = newBlock;
+
+	print_action(address, state->wordsPerBlock, cache_to_memory);
+	return 1;
 }
 
 
-int cacheSystem(int address, stateType* state, enum access_type action){
+	// * address is the starting word address of the range of data being transferred.
+	// * size is the size of the range of data being transferred.
+	// * type specifies the source and destination of the data being transferred.
+	// *
+	// * cache_to_processor: reading data from the cache to the processor
+	// * processor_to_cache: writing data from the processor to the cache
+	// * memory_to_cache: reading data from the memory to the cache
+	// * cache_to_memory: evicting cache data by writing it to the memory
+	// * cache_to_nowhere: evicting cache data by throwing it away
+	// */
+	// print_action(address, 1, action_type);
+	// print_action(address, state->wordsPerBlock, action_type);
+
+int cacheSystem(int address, stateType* state, enum access_type action, int write_value){
 	incrementCyclesSinceLastUse(state);
 
 	int tag = getTag(address, state);
@@ -354,18 +372,21 @@ int cacheSystem(int address, stateType* state, enum access_type action){
 
 	//processor read from mem
 	if(action == read_mem){
+		int readValue;
 		if(isInCache == 1){
 			// read hit
 			for(int i=0; i < state->ways; i++){
 				if(state->cacheArr[set][i].tag == tag){
-					return state->cacheArr[set][i].data[blkOffset];
+					readValue = state->cacheArr[set][i].data[blkOffset];
 				}
 			}
 		}else{
 			// read miss
 			int blockWay = memToCache(address, state);
-			return state->cacheArr[set][blockWay].data[blkOffset];
+			readValue = state->cacheArr[set][blockWay].data[blkOffset];
 		}
+		print_action(address, 1, cache_to_processor);
+		return readValue;
 	}
 
 	//process write to mem
@@ -378,9 +399,10 @@ int cacheSystem(int address, stateType* state, enum access_type action){
 			// write miss
 
 		}
+		return -1;
 	}
 
-	return 1;
+	return -2;
 }
 
 int signExtend(int num){
@@ -410,7 +432,8 @@ void run(stateType* state){
 		//printState(state);
 		
 		// Instruction Fetch
-		instr = state->mem[state->pc];
+		// instr = state->mem[state->pc];
+		instr = cacheSystem(state->pc, state, read_mem, -1)
 
 		/* check for halt */
 		if (opcode(instr) == HALT) {
@@ -456,10 +479,12 @@ void run(stateType* state){
 			aluResult = regB + offset;
 			if(opcode(instr) == LW){
 				// Load
-				state->reg[field0(instr)] = state->mem[aluResult];
+				// state->reg[field0(instr)] = state->mem[aluResult];
+				state->reg[field0(instr)] = cacheSystem(aluResult, state, read_mem, -1)
 			}else if(opcode(instr) == SW){
 				// Store
-				state->mem[aluResult] = regA;
+				// state->mem[aluResult] = regA;
+				cacheSystem(aluResult, state, write_mem, regA)
 			}
 		}
 		// JALR
