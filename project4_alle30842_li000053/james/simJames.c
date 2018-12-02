@@ -191,8 +191,9 @@ void printCache(stateType* state){
 					printf(" | "); 
 				}
 			}
-			printf("\n\n");
+			printf("\n");
 		}
+		printf("\n");
 	}
 }
 
