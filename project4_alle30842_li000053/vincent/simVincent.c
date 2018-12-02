@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <math.h>
 
 #define NUMMEMORY 65536 /* maximum number of data words in memory */
 #define NUMREGS 8 /* number of machine registers */
@@ -16,6 +17,8 @@
 #define JALR 5
 #define HALT 6
 #define NOOP 7
+
+#define WORDSIZE 32
 
 #define NOOPINSTRUCTION 0x1c00000
 
@@ -57,16 +60,47 @@ int opcode(int instruction){
     return(instruction>>22);
 }
 
-int tag(int address){
-	return address;
+int tag(int address, stateType* state){
+	int words_per_blk = state->wordsPerBlock;
+	int num_of_set = state->sets;
+
+	int bits_blkOffset = log(words_per_blk)/log(2);
+	int bits_set = log(num_of_set)/log(2);
+
+	int tag = address >> (bits_blkOffset + bits_set);
+
+	return tag;
 }
 
-int set(int address){
-	return address;
+int set(int address, stateType* state){
+	int num_of_set = state->sets;
+	int bits_needed = log(num_of_set) / log(2);
+	int mask = 0;
+
+
+
+	for(int i=0; i<bits_needed ;i++){
+		mask += pow(2,i);
+	}
+
+	int set = (address & mask);
+
+	return set;
 }
 
-int blkOffset(int address){
-	return address;
+int blkOffset(int address, stateType* state){
+	int words_per_blk = state->wordsPerBlock;
+	int bits_needed = log(words_per_blk) / log(2);
+	int mask = 0;
+
+	for(int i=0; i<bits_needed ;i++){
+		mask += pow(2,i);
+	}
+
+	int offset = (address & mask);
+
+
+	return offset;
 }
 
 /*
@@ -368,6 +402,7 @@ int main(int argc, char** argv){
 	state->sets = numSets;
 	state->ways = associativity;
 	state->wordsPerBlock = blockSizeInWords;
+
 
 	// Alocate our cache array the size of the number of sets/lines we have contaning pointers to the array of blocks in each set
 	state->cacheArr = malloc(state->sets * sizeof(blockType*));
