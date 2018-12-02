@@ -103,14 +103,29 @@ void print_action(int address, int size, enum action_type type){
 
 enum access_type {read_mem, write_mem};
 
-int cacheSystem(int address, stateType* state, enum access_type action){
+int seatchThroughCache(int address, stateType* state){
+	// loop through all sets of cache
+	for (int i = 0; i < state->sets; i++ ){
+		// loop through all the ways of a set
+		for (int k = 0; k < state->ways; k++ ){
+			state->cacheArr[i][k]->dirtyBit;
+			printf("dirtyBit: %d\n", state->cacheArr[k]->dirtyBit);
+			printf("validBit: %d\n", state->cacheArr[k]->validBit);
+			printf("data:\n");
+			for (int l = 0; l < state->wordsPerBlock; l++ ){
+				printf("\t%d | ", state->cacheArr[k]->data[l]);
+			}
+		}
+	}
+}
+
+int alocateCacheLine(int address, stateType* state, enum access_type action){
 	state->cacheArr = 0; // change this line
 
 	return 1;
 }
 
-
-int alocateCacheLine(int address, stateType* state, enum access_type action){
+int cacheSystem(int address, stateType* state, enum access_type action){
 	state->cacheArr = 0; // change this line
 
 	return 1;
