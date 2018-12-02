@@ -33,6 +33,7 @@ char* getDirtyBitName(enum dirty_bit bit)
    {
       case dirty: return "dirty";
       case clean: return "clean";
+      default: return"invalid val"
    }
 }
 char* getValidBitName(enum valid_bit bit) 
@@ -41,6 +42,7 @@ char* getValidBitName(enum valid_bit bit)
    {
       case valid: return "valid";
       case invalid: return "invalid";
+      default: return"invalid val"
    }
 }
 char* getAccessTypeName(enum access_type bit) 
@@ -49,6 +51,7 @@ char* getAccessTypeName(enum access_type bit)
    {
       case read_mem: return "read_mem";
       case write_mem: return "write_mem";
+      default: return"invalid val"
    }
 }
 
@@ -176,8 +179,8 @@ void printCache(stateType* state){
 		// loop through all the ways of a set
 		for (int k = 0; k < state->ways; k++ ){
 			printf("Way: %d\n", k);
-			printf("tag: %s\n", getDirtyBitName(state->cacheArr[i][k].tag));
-			printf("cyclesSinceLastUse: %s\n", getDirtyBitName(state->cacheArr[i][k].cyclesSinceLastUse));
+			printf("tag: %s\n", state->cacheArr[i][k].tag);
+			printf("cyclesSinceLastUse: %s\n", state->cacheArr[i][k].cyclesSinceLastUse);
 			printf("dirtyBit: %s\n", getDirtyBitName(state->cacheArr[i][k].dirtyBit));
 			printf("validBit: %s\n", getValidBitName(state->cacheArr[i][k].validBit));
 			printf("data:\t");
