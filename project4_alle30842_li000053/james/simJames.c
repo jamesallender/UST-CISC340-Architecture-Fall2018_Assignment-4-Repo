@@ -233,7 +233,7 @@ int alocateCacheLine(int address, stateType* state){
 	if (state->cacheArr[set][lru].dirtyBit == dirty){
 		// write each word in the block to memory
 		for (int l = 0; l < state->wordsPerBlock; l++ ){
-			state.mem[address + l] = state->cacheArr[set][lru].data[l];
+			state->mem[address + l] = state->cacheArr[set][lru].data[l];
 		}	
 	}
 	return lru;
