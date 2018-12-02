@@ -197,7 +197,7 @@ int seatchThroughCache(int address, stateType* state){
 		// loop through all the ways of a set
 	for (int k = 0; k < state->ways; k++ ){
 		if (getDirtyBitName(state->cacheArr[set][k].tag == tag)){
-			return 1
+			return 1;
 		}
 	}	
 	return -1;
