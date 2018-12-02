@@ -433,7 +433,7 @@ void run(stateType* state){
 		
 		// Instruction Fetch
 		// instr = state->mem[state->pc];
-		instr = cacheSystem(state->pc, state, read_mem, -1)
+		instr = cacheSystem(state->pc, state, read_mem, -1);
 
 		/* check for halt */
 		if (opcode(instr) == HALT) {
@@ -480,11 +480,11 @@ void run(stateType* state){
 			if(opcode(instr) == LW){
 				// Load
 				// state->reg[field0(instr)] = state->mem[aluResult];
-				state->reg[field0(instr)] = cacheSystem(aluResult, state, read_mem, -1)
+				state->reg[field0(instr)] = cacheSystem(aluResult, state, read_mem, -1);
 			}else if(opcode(instr) == SW){
 				// Store
 				// state->mem[aluResult] = regA;
-				cacheSystem(aluResult, state, write_mem, regA)
+				cacheSystem(aluResult, state, write_mem, regA);
 			}
 		}
 		// JALR
