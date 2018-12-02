@@ -33,6 +33,7 @@ char* getDirtyBitName(enum dirty_bit bit)
    {
       case dirty: return "dirty";
       case clean: return "clean";
+      default: return"invalid val";
    }
 }
 char* getValidBitName(enum valid_bit bit) 
@@ -41,6 +42,7 @@ char* getValidBitName(enum valid_bit bit)
    {
       case valid: return "valid";
       case invalid: return "invalid";
+      default: return"invalid val";
    }
 }
 char* getAccessTypeName(enum access_type bit) 
@@ -49,6 +51,7 @@ char* getAccessTypeName(enum access_type bit)
    {
       case read_mem: return "read_mem";
       case write_mem: return "write_mem";
+      default: return"invalid val";
    }
 }
 
@@ -58,6 +61,7 @@ typedef struct blockStruct {
 	enum valid_bit validBit;
 	int tag;
 	int *data;
+	int cyclesSinceLastUse;
 } blockType;
 
 typedef struct stateStruct {
@@ -73,12 +77,14 @@ typedef struct stateStruct {
 
 // Function Headers
 int searchCache(int address, stateType* state);
-int alocateCacheLine(int address, stateType* state, enum access_type action);
+int alocateCacheLine(int address, stateType* state);
 int cacheSystem(int address, stateType* state, enum access_type action);
 int signExtend(int num);
 void run(stateType* state);
 void print_action(int address, int size, enum action_type type);
 void printCache(stateType* state);
+void incrementCyclesSinceLastUse(stateType* state);
+void memToCache(int address, stateType* state);
 
 // Functions
 int field0(int instruction){
@@ -175,6 +181,8 @@ void printCache(stateType* state){
 		// loop through all the ways of a set
 		for (int k = 0; k < state->ways; k++ ){
 			printf("Way: %d\n", k);
+			printf("tag: %d\n", state->cacheArr[i][k].tag);
+			printf("cyclesSinceLastUse: %d\n", state->cacheArr[i][k].cyclesSinceLastUse);
 			printf("dirtyBit: %s\n", getDirtyBitName(state->cacheArr[i][k].dirtyBit));
 			printf("validBit: %s\n", getValidBitName(state->cacheArr[i][k].validBit));
 			printf("data:\t");
@@ -187,39 +195,74 @@ void printCache(stateType* state){
 			}
 			printf("\n\n");
 		}
+		printf("-------------\n");
 	}
 }
 
+// return 1 if the given address is in cache otherwise -1
 int searchCache(int address, stateType* state){
-	// loop through all sets of cache
 	int set = getSet(address, state);
-	int blockOffset = getBlkOffset(address, state);
 	int tag = getTag(address, state);
-		// loop through all the ways of a set
+	// loop through all the ways of the address's set
 	for (int k = 0; k < state->ways; k++ ){
+		// if the tag is found in the set return 1
 		if (state->cacheArr[set][k].tag == tag){
 			return 1;
 		}
 	}	
+	// otherwise return -1
 	return -1;
 }
 
-int alocateCacheLine(int address, stateType* state, enum access_type action){
-	state->cacheArr = 0; // change this line
-
-	return 1;
+// Returns the way in the cach set corisponding to the given address that can be overwriten
+int alocateCacheLine(int address, stateType* state){
+	int set = getSet(address, state);
+	int lru = 0;
+	// loop through all the ways of a set
+	for (int k = 0; k < state->ways; k++ ){
+		// If the current way is invalid return it to be overwriten
+		if (state->cacheArr[set][k].validBit == invalid){
+			return k;
+		}
+		// If the current line's cyclesSinceLastUse is greater than the current 
+		// lru's cyclesSinceLastUse change the lru to the current way
+		if (state->cacheArr[set][k].cyclesSinceLastUse > state->cacheArr[set][lru].cyclesSinceLastUse){
+			lru = k;
+		}
+	}	
+	// check if the lru way needs to be written back to memory
+	if (state->cacheArr[set][lru].dirtyBit == dirty){
+		// write each word in the block to memory
+		for (int l = 0; l < state->wordsPerBlock; l++ ){
+			state->mem[address + l] = state->cacheArr[set][lru].data[l];
+		}	
+	}
+	return lru;
 }
 
+// increment the cyclesSinceLastUse for all items in cache
+void incrementCyclesSinceLastUse(stateType* state){
+	// loop through all sets of cache
+	for (int i = 0; i < state->sets; i++ ){
+		// loop through all the ways of a set
+		for (int k = 0; k < state->ways; k++ ){
+			state->cacheArr[i][k].cyclesSinceLastUse = state->cacheArr[i][k].cyclesSinceLastUse + 1;
+		}
+	}
+}
+
+// int blockOffset = getBlkOffset(address, state);
+
 void memToCache(int address, stateType* state){
-	int tag = getTag(address);
-	int set = getSet(address);
-	int blkOffset = getBlkOffset(address);
+	int tag = getTag(address, state);
+	int set = getSet(address, state);
+	int blkOffset = getBlkOffset(address, state);
 
 	int way_to_write = alocateCacheLine(address, state);
 
 	blockType newBlock;
 	newBlock.dirtyBit = clean;
-	newBlock.validBit = valid_bit;
+	newBlock.validBit = valid;
 	newBlock.tag = tag;
 
 	for(int i=0; i<state->wordsPerBlock; i++){
@@ -228,8 +271,8 @@ void memToCache(int address, stateType* state){
 
 	printf("**** Write from MEM to CACHE ****\n");
 	printf("OLD Block\n");
-	printf("dirtyBit: %s\n", state->cacheArr[set][way_to_write].dirtyBit));
-	printf("validBit: %s\n", state->cacheArr[set][way_to_write].validBit));
+	printf("dirtyBit: %s\n", getDirtyBitName(state->cacheArr[set][way_to_write].dirtyBit));
+	printf("validBit: %s\n", getValidBitName(state->cacheArr[set][way_to_write].validBit));
 	printf("data:\t");
 	for (int l = 0; l < state->wordsPerBlock; l++ ){
 		printf("%d", state->cacheArr[set][way_to_write].data[l]);
@@ -241,8 +284,8 @@ void memToCache(int address, stateType* state){
 
 	printf("**** Write from MEM to CACHE ****\n");
 	printf("NEW Block\n");
-	printf("dirtyBit: %s\n", state->cacheArr[set][way_to_write].dirtyBit));
-	printf("validBit: %s\n", state->cacheArr[set][way_to_write].validBit));
+	printf("dirtyBit: %s\n", getDirtyBitName(state->cacheArr[set][way_to_write].dirtyBit));
+	printf("validBit: %s\n", getValidBitName(state->cacheArr[set][way_to_write].validBit));
 	printf("data:\t");
 	for (int l = 0; l < state->wordsPerBlock; l++ ){
 		printf("%d", state->cacheArr[set][way_to_write].data[l]);
@@ -257,6 +300,7 @@ void memToCache(int address, stateType* state){
 }
 
 int cacheSystem(int address, stateType* state, enum access_type action){
+	incrementCyclesSinceLastUse(state);
 
 	int tag = getTag(address, state);
 	int set = getSet(address, state);
@@ -487,6 +531,8 @@ int main(int argc, char** argv){
 			blockType block;
 			block.dirtyBit = clean;
 			block.validBit = invalid;
+			block.tag = 0;
+			block.cyclesSinceLastUse = 0;
 			block.data = (int*)malloc(state->wordsPerBlock * sizeof(int));
 			for (int l = 0; l < state->wordsPerBlock; l++ ){
 				block.data[l] = 0;
@@ -496,6 +542,7 @@ int main(int argc, char** argv){
 	}
 
 	printCache(state);
+	printf("%d\n", alocateCacheLine(0,state));
 
 	memset(state->mem, 0, NUMMEMORY*sizeof(int));
 	memset(state->reg, 0, NUMREGS*sizeof(int));
