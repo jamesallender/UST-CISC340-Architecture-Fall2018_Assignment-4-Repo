@@ -282,7 +282,7 @@ int main(int argc, char** argv){
 
 	while((cin = getopt(argc, argv, "f:b:s:a:")) != -1){
 		printf("cheking args:\n");
-		printf("args: %s\n", cin);
+		// printf("args: %s\n", cin);
 		printf("args: %d\n", cin);
 		switch(cin)
 		{
