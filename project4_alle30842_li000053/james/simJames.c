@@ -148,7 +148,7 @@ void printCache(stateType* state){
 			printf("validBit: %s\n", getValidBitName(state->cacheArr[i][k].validBit));
 			printf("data:\t");
 			for (int l = 0; l < state->wordsPerBlock; l++ ){
-				printf("%d", state->cacheArr[i][k].data[l]); 
+				printf("%d", state->cacheArr[i][k]->data[l]); 
 				if (l != state->wordsPerBlock-1){
 					printf(" | "); 
 				}
