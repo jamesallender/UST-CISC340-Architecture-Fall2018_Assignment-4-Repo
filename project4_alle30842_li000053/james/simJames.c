@@ -271,7 +271,7 @@ void memToCache(int address, stateType* state){
 
 	printf("**** Write from MEM to CACHE ****\n");
 	printf("OLD Block\n");
-	printf("dirtyBit: %s\n", getDirtyBitNames(tate->cacheArr[set][way_to_write].dirtyBit));
+	printf("dirtyBit: %s\n", getDirtyBitName(state->cacheArr[set][way_to_write].dirtyBit));
 	printf("validBit: %s\n", getValidBitName(state->cacheArr[set][way_to_write].validBit));
 	printf("data:\t");
 	for (int l = 0; l < state->wordsPerBlock; l++ ){
