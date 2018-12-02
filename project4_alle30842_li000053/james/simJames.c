@@ -254,9 +254,9 @@ void incrementCyclesSinceLastUse(stateType* state){
 // int blockOffset = getBlkOffset(address, state);
 
 void memToCache(int address, stateType* state){
-	int tag = getTag(address);
-	int set = getSet(address);
-	int blkOffset = getBlkOffset(address);
+	int tag = getTag(address, state);
+	int set = getSet(address, state);
+	int blkOffset = getBlkOffset(address, state);
 
 	int way_to_write = alocateCacheLine(address, state);
 
@@ -271,8 +271,8 @@ void memToCache(int address, stateType* state){
 
 	printf("**** Write from MEM to CACHE ****\n");
 	printf("OLD Block\n");
-	printf("dirtyBit: %s\n", state->cacheArr[set][way_to_write].dirtyBit);
-	printf("validBit: %s\n", state->cacheArr[set][way_to_write].validBit);
+	printf("dirtyBit: %s\n", getDirtyBitNames(tate->cacheArr[set][way_to_write].dirtyBit));
+	printf("validBit: %s\n", getValidBitName(state->cacheArr[set][way_to_write].validBit));
 	printf("data:\t");
 	for (int l = 0; l < state->wordsPerBlock; l++ ){
 		printf("%d", state->cacheArr[set][way_to_write].data[l]);
@@ -284,8 +284,8 @@ void memToCache(int address, stateType* state){
 
 	printf("**** Write from MEM to CACHE ****\n");
 	printf("NEW Block\n");
-	printf("dirtyBit: %s\n", state->cacheArr[set][way_to_write].dirtyBit);
-	printf("validBit: %s\n", state->cacheArr[set][way_to_write].validBit);
+	printf("dirtyBit: %s\n", getDirtyBitName(state->cacheArr[set][way_to_write].dirtyBit));
+	printf("validBit: %s\n", getValidBitName(state->cacheArr[set][way_to_write].validBit));
 	printf("data:\t");
 	for (int l = 0; l < state->wordsPerBlock; l++ ){
 		printf("%d", state->cacheArr[set][way_to_write].data[l]);
