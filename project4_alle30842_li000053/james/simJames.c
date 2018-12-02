@@ -120,9 +120,9 @@ void printCache(stateType* state){
 			printf("Way: %d\n", k);
 			printf("dirtyBit: %d\n", state->cacheArr[i][k].dirtyBit);
 			printf("validBit: %d\n", state->cacheArr[i][k].validBit);
-			printf("data:\n");
+			printf("data:\n\t");
 			for (int l = 0; l < state->wordsPerBlock; l++ ){
-				printf("\t%d | ", state->cacheArr[i][k].data[l]);
+				printf("%d | ", state->cacheArr[i][k].data[l]);
 			}
 			printf("\n");
 		}
