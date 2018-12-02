@@ -27,6 +27,46 @@ enum action_type {cache_to_processor, processor_to_cache, memory_to_cache, cache
 cache_to_nowhere};
 enum access_type {read_mem, write_mem};
 
+// Structures
+typedef struct blockStruct {
+    enum dirty_bit dirtyBit;
+	enum valid_bit validBit;
+	int tag;
+	int *data;
+	int cyclesSinceLastUse;
+} blockType;
+
+typedef struct stateStruct {
+    int pc;
+	int mem[NUMMEMORY];
+	int reg[NUMREGS];
+	int numMemory;
+	blockType **cacheArr;
+	int sets;
+	int ways;
+	int wordsPerBlock;
+} stateType;
+
+// Function Headers
+int field0(int instruction);
+int field1(int instruction);
+int field2(int instruction);
+int opcode(int instruction);
+int getTag(int address, stateType* state);
+int getSet(int address, stateType* state);
+int getBlkOffset(int address, stateType* state);
+int searchCache(int address, stateType* state);
+int alocateCacheLine(int address, stateType* state);
+int cacheSystem(int address, stateType* state, enum access_type action);
+int signExtend(int num);
+void run(stateType* state);
+void print_action(int address, int size, enum action_type type);
+void printCache(stateType* state);
+void incrementCyclesSinceLastUse(stateType* state);
+void memToCache(int address, stateType* state);
+int getAddressBase(int address, stateType* state);
+
+// Functions
 char* getDirtyBitName(enum dirty_bit bit) 
 {
    switch (bit) 
@@ -55,39 +95,6 @@ char* getAccessTypeName(enum access_type bit)
    }
 }
 
-// Structures
-typedef struct blockStruct {
-    enum dirty_bit dirtyBit;
-	enum valid_bit validBit;
-	int tag;
-	int *data;
-	int cyclesSinceLastUse;
-} blockType;
-
-typedef struct stateStruct {
-    int pc;
-	int mem[NUMMEMORY];
-	int reg[NUMREGS];
-	int numMemory;
-	blockType **cacheArr;
-	int sets;
-	int ways;
-	int wordsPerBlock;
-} stateType;
-
-// Function Headers
-int searchCache(int address, stateType* state);
-int alocateCacheLine(int address, stateType* state);
-int cacheSystem(int address, stateType* state, enum access_type action);
-int signExtend(int num);
-void run(stateType* state);
-void print_action(int address, int size, enum action_type type);
-void printCache(stateType* state);
-void incrementCyclesSinceLastUse(stateType* state);
-void memToCache(int address, stateType* state);
-int getAddressBase(int address, stateType* state);
-
-// Functions
 int field0(int instruction){
     return( (instruction>>19) & 0x7);
 }
@@ -267,7 +274,7 @@ void incrementCyclesSinceLastUse(stateType* state){
 
 // int blockOffset = getBlkOffset(address, state);
 
-void memToCache(int address, stateType* state){
+int memToCache(int address, stateType* state){
 	int tag = getTag(address, state);
 	int set = getSet(address, state);
 	int blkOffset = getBlkOffset(address, state);
@@ -311,7 +318,28 @@ void memToCache(int address, stateType* state){
 
 
 	state->cacheArr[set][way_to_write] = newBlock;
+	return way_to_write;
 }
+
+int cacheToMem(int address, stateType* state){
+	int tag = getTag(address, state);
+	int set = getSet(address, state);
+	int blkOffset = getBlkOffset(address, state);
+
+	int way_to_write = alocateCacheLine(address, state);
+
+	blockType newBlock;
+	newBlock.dirtyBit = clean;
+	newBlock.validBit = valid;
+	newBlock.tag = tag;
+
+	for(int i=0; i<state->wordsPerBlock; i++){
+		newBlock.data[i] = state->mem[getAddressBase(address, state) + i];
+	}
+
+	state->cacheArr[set][way_to_write] = newBlock;
+}
+
 
 int cacheSystem(int address, stateType* state, enum access_type action){
 	incrementCyclesSinceLastUse(state);
@@ -320,13 +348,11 @@ int cacheSystem(int address, stateType* state, enum access_type action){
 	int set = getSet(address, state);
 	int blkOffset = getBlkOffset(address, state);
 
+	int isInCache = searchCache(address, state);
+
 
 	//processor read from mem
 	if(action == read_mem){
-
-		int isInCache = searchCache(address, state);
-
-
 		if(isInCache == 1){
 			// read hit
 			for(int i=0; i < state->ways; i++){
@@ -336,13 +362,21 @@ int cacheSystem(int address, stateType* state, enum access_type action){
 			}
 		}else{
 			// read miss
-
+			int blockWay = memToCache(address, state);
+			return state->cacheArr[set][blockWay].data[blkOffset];
 		}
 	}
 
 	//process write to mem
 	if(action == write_mem){
+		if(isInCache == 1){
+			// write hit
 
+		}
+		else{
+			// write miss
+
+		}
 	}
 
 	return 1;
