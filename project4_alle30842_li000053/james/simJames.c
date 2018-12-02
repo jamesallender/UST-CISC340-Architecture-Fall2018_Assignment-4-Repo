@@ -347,12 +347,12 @@ int main(int argc, char** argv){
 				// printf("blockSizeInWords: %s\n", blockSizeInWords);
 				break;
 			case 's':
-				numSets = *optarg - '0';
+				numSets = atoi(optarg);
 				printf("numSets: %d\n", numSets);
 				// printf("numSets: %s\n", numSets);
 				break;
 			case 'a':
-				associativity = *optarg - '0';
+				associativity = atoi(optarg);
 				printf("associativity: %d\n", associativity);
 				// printf("associativity: %s\n", associativity);
 				break;
