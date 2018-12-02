@@ -85,7 +85,7 @@ void print_action(int address, int size, enum action_type type);
 void printCache(stateType* state);
 void incrementCyclesSinceLastUse(stateType* state);
 void memToCache(int address, stateType* state);
-int getAddressBase(int address);
+int getAddressBase(int address, stateType* state);
 
 // Functions
 int field0(int instruction){
