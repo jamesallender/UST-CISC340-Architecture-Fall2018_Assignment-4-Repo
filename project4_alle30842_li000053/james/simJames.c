@@ -320,7 +320,7 @@ int memToCache(int address, stateType* state){
 
 	state->cacheArr[set][way_to_write] = newBlock;
 
-	print_action(address, state->wordsPerBlock, memory_to_cache);
+	print_action(getAddressBase(address, state), state->wordsPerBlock, memory_to_cache);
 	return way_to_write;
 }
 
