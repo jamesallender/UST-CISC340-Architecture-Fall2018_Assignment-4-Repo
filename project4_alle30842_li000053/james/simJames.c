@@ -148,7 +148,7 @@ void printCache(stateType* state){
 			printf("validBit: %s\n", getValidBitName(state->cacheArr[i][k].validBit));
 			printf("data:\t");
 			for (int l = 0; l < state->wordsPerBlock; l++ ){
-				printf("%d", state->cacheArr[i][k]->data[l]); 
+				printf("%d", state->cacheArr[i][k].data[l]); 
 				if (l != state->wordsPerBlock-1){
 					printf(" | "); 
 				}
@@ -159,6 +159,24 @@ void printCache(stateType* state){
 }
 
 int seatchThroughCache(int address, stateType* state){
+	// loop through all sets of cache
+	for (int i = 0; i < state->sets; i++ ){
+		printf("Set: %d\n", i);
+		// loop through all the ways of a set
+		for (int k = 0; k < state->ways; k++ ){
+			printf("Way: %d\n", k);
+			printf("dirtyBit: %s\n", getDirtyBitName(state->cacheArr[i][k].dirtyBit));
+			printf("validBit: %s\n", getValidBitName(state->cacheArr[i][k].validBit));
+			printf("data:\t");
+			for (int l = 0; l < state->wordsPerBlock; l++ ){
+				printf("%d", state->cacheArr[i][k].data[l]); 
+				if (l != state->wordsPerBlock-1){
+					printf(" | "); 
+				}
+			}
+			printf("\n\n");
+		}
+	}
 	return 1;
 }
 
