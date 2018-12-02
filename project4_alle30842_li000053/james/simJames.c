@@ -19,8 +19,19 @@
 
 #define NOOPINSTRUCTION 0x1c00000
 
+int seatchThroughCache(int address, stateType* state);
+int alocateCacheLine(int address, stateType* state, enum access_type action);
+int cacheSystem(int address, stateType* state, enum access_type action);
+int signExtend(int num);
+void run(stateType* state);
+void print_action(int address, int size, enum action_type type);
+void printCache(stateType* state);
+
 enum dirty_bit {dirty, clean};
 enum valid_bit {valid, invalid};
+enum action_type {cache_to_processor, processor_to_cache, memory_to_cache, cache_to_memory,
+cache_to_nowhere};
+enum access_type {read_mem, write_mem};
 
 typedef struct blockStruct {
     enum dirty_bit dirtyBit;
@@ -82,9 +93,6 @@ int blkOffset(int address){
 * cache_to_memory: evicting cache data by writing it to the memory
 * cache_to_nowhere: evicting cache data by throwing it away
 */
-enum action_type {cache_to_processor, processor_to_cache, memory_to_cache, cache_to_memory,
-cache_to_nowhere};
-
 void print_action(int address, int size, enum action_type type){
 	printf("transferring word [%i-%i] ", address, address + size - 1);
 	if (type == cache_to_processor) {
@@ -100,10 +108,7 @@ void print_action(int address, int size, enum action_type type){
 	}
 }
 
-
-enum access_type {read_mem, write_mem};
-
-int seatchThroughCache(int address, stateType* state){
+void printCache(stateType* state){
 	// loop through all sets of cache
 	for (int i = 0; i < state->sets; i++ ){
 		// loop through all the ways of a set
@@ -118,6 +123,10 @@ int seatchThroughCache(int address, stateType* state){
 	}
 }
 
+int seatchThroughCache(int address, stateType* state){
+	return 1;
+}
+
 int alocateCacheLine(int address, stateType* state, enum access_type action){
 	state->cacheArr = 0; // change this line
 
@@ -130,49 +139,6 @@ int cacheSystem(int address, stateType* state, enum access_type action){
 	return 1;
 }
 
-
-
-// void printInstruction(int instr){
-//     char opcodeString[10];
-//     if (opcode(instr) == ADD) {
-// 		strcpy(opcodeString, "add");
-//     } else if (opcode(instr) == NAND) {
-// 		strcpy(opcodeString, "nand");
-//     } else if (opcode(instr) == LW) {
-// 		strcpy(opcodeString, "lw");
-//     } else if (opcode(instr) == SW) {
-// 		strcpy(opcodeString, "sw");
-//     } else if (opcode(instr) == BEQ) {
-// 		strcpy(opcodeString, "beq");
-//     } else if (opcode(instr) == JALR) {
-// 		strcpy(opcodeString, "jalr");
-//     } else if (opcode(instr) == HALT) {
-// 		strcpy(opcodeString, "halt");
-//     } else if (opcode(instr) == NOOP) {
-// 		strcpy(opcodeString, "noop");
-//     } else {
-// 		strcpy(opcodeString, "data");
-//     }
-
-//     printf("%s %d %d %d\n", opcodeString, field0(instr), field1(instr),
-// 	field2(instr));
-// }
-
-// void printState(stateType *statePtr){
-//     int i;
-// 	printf("\n@@@\nstate:\n");
-// 	printf("\tpc %d\n", statePtr->pc);
-// 	printf("\tmemory:\n");
-// 	for(i = 0; i < statePtr->numMemory; i++){
-// 		printf("\t\tmem[%d]=%d\n", i, statePtr->mem[i]);
-// 	}	
-// 	printf("\tregisters:\n");
-// 	for(i = 0; i < NUMREGS; i++){
-// 		printf("\t\treg[%d]=%d\n", i, statePtr->reg[i]);
-// 	}
-// 	printf("end state\n");
-// }
-
 int signExtend(int num){
 	// convert a 16-bit number into a 32-bit integer
 	if (num & (1<<15) ) {
@@ -180,10 +146,6 @@ int signExtend(int num){
 	}
 	return num;
 }
-
-// void print_stats(int n_instrs){
-// 	printf("INSTRUCTIONS: %d\n", n_instrs);
-// }
 
 void run(stateType* state){
 
@@ -336,27 +298,6 @@ int main(int argc, char** argv){
 		}
 	}
 
-	/*
-	if(argc == 1){
-		fname = (char*)malloc(sizeof(char)*100);
-		printf("Enter the name of the machine code file to simulate: ");
-		fgets(fname, 100, stdin);
-		fname[strlen(fname)-1] = '\0'; // gobble up the \n with a \0
-	}
-	else if (argc == 2){
-        
-	    int strsize = strlen(argv[1]);
-
-		fname = (char*)malloc(strsize);
-		fname[0] = '\0';
-
-		strcat(fname, argv[1]);
-	}else{
-		printf("Please run this program correctly\n");
-		exit(-1);
-	}
-	*/
-
 	FILE *fp = fopen(fname, "r");
 	if (fp == NULL) {
 		printf("Cannot open file '%s' : %s\n", fname, strerror(errno));
@@ -403,6 +344,7 @@ int main(int argc, char** argv){
 		}
 	}
 
+	printCache(state);
 
 	memset(state->mem, 0, NUMMEMORY*sizeof(int));
 	memset(state->reg, 0, NUMREGS*sizeof(int));
