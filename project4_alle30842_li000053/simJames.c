@@ -291,12 +291,15 @@ int main(int argc, char** argv){
 				break;
 			case 'b':
 				blockSizeInWords = (int)*optarg;
+				printf("blockSizeInWords: %d\n", blockSizeInWords);
 				break;
 			case 's':
 				numSets = (int)*optarg;
+				printf("numSets: %d\n", numSets);
 				break;
 			case 'a':
 				associativity = (int)*optarg;
+				printf("associativity: %d\n", associativity);
 				break;
 			case '?':
 				if(optopt == 'f'){
