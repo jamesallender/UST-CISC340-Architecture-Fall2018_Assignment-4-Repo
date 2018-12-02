@@ -26,6 +26,31 @@ enum action_type {cache_to_processor, processor_to_cache, memory_to_cache, cache
 cache_to_nowhere};
 enum access_type {read_mem, write_mem};
 
+char* getDirtyBitName(enum dirty_bit bit) 
+{
+   switch (bit) 
+   {
+      case dirty: return "dirty";
+      case clean: return "clean";
+   }
+}
+char* getValidBitName(enum valid_bit bit) 
+{
+   switch (bit) 
+   {
+      case valid: return "valid";
+      case invalid: return "invalid";
+   }
+}
+char* getAccessTypeName(enum access_type bit) 
+{
+   switch (bit) 
+   {
+      case read_mem: return "read_mem";
+      case write_mem: return "write_mem";
+   }
+}
+
 // Structures
 typedef struct blockStruct {
     enum dirty_bit dirtyBit;
@@ -118,8 +143,8 @@ void printCache(stateType* state){
 		// loop through all the ways of a set
 		for (int k = 0; k < state->ways; k++ ){
 			printf("Way: %d\n", k);
-			printf("dirtyBit: %d\n", state->cacheArr[i][k].dirtyBit);
-			printf("validBit: %d\n", state->cacheArr[i][k].validBit);
+			printf("dirtyBit: %s\n", getDirtyBitName(state->cacheArr[i][k].dirtyBit));
+			printf("validBit: %s\n", getValidBitName(state->cacheArr[i][k].validBit));
 			printf("data:\n\t");
 			for (int l = 0; l < state->wordsPerBlock; l++ ){
 				printf("%d | ", state->cacheArr[i][k].data[l]);
