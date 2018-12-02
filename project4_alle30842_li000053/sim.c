@@ -110,6 +110,12 @@ int cacheSystem(int address, stateType* state, enum access_type action){
 }
 
 
+int alocateCacheLine(int address, stateType* state, enum access_type action){
+	state->cacheArr = 0; // change this line
+
+	return 1;
+}
+
 
 
 // void printInstruction(int instr){
