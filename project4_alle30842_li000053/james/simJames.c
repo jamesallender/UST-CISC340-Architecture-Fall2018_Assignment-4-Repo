@@ -96,16 +96,46 @@ int opcode(int instruction){
     return(instruction>>22);
 }
 
-int tag(int address){
-	return address;
+int getTag(int address, stateType* state){
+	int words_per_blk = state->wordsPerBlock;
+	int num_of_set = state->sets;
+
+	int bits_blkOffset = log(words_per_blk)/log(2);
+	int bits_set = log(num_of_set)/log(2);
+
+	int tag = address >> (bits_blkOffset + bits_set);
+
+	return tag;
 }
 
-int set(int address){
-	return address;
+int getSet(int address, stateType* state){
+	int num_of_set = state->sets;
+	int bits_needed = log(num_of_set) / log(2);
+	int mask = 0;
+
+
+
+	for(int i=0; i<bits_needed ;i++){
+		mask += pow(2,i);
+	}
+
+	int set = (address & mask);
+
+	return set;
 }
 
-int blkOffset(int address){
-	return address;
+int getBlkOffset(int address, stateType* state){
+	int words_per_blk = state->wordsPerBlock;
+	int bits_needed = log(words_per_blk) / log(2);
+	int mask = 0;
+
+	for(int i=0; i<bits_needed ;i++){
+		mask += pow(2,i);
+	}
+
+	int offset = (address & mask);
+
+	return offset;
 }
 
 /*
@@ -160,24 +190,16 @@ void printCache(stateType* state){
 
 int seatchThroughCache(int address, stateType* state){
 	// loop through all sets of cache
-	for (int i = 0; i < state->sets; i++ ){
-		printf("Set: %d\n", i);
+	setNum = getSet(address);
+	blockOffset = getBlkOffset(address);
+	addressTag = getTag(address);
 		// loop through all the ways of a set
-		for (int k = 0; k < state->ways; k++ ){
-			printf("Way: %d\n", k);
-			printf("dirtyBit: %s\n", getDirtyBitName(state->cacheArr[i][k].dirtyBit));
-			printf("validBit: %s\n", getValidBitName(state->cacheArr[i][k].validBit));
-			printf("data:\t");
-			for (int l = 0; l < state->wordsPerBlock; l++ ){
-				printf("%d", state->cacheArr[i][k].data[l]); 
-				if (l != state->wordsPerBlock-1){
-					printf(" | "); 
-				}
-			}
-			printf("\n\n");
+	for (int k = 0; k < state->ways; k++ ){
+		if (getDirtyBitName(state->cacheArr[setNum][k].tag == addressTag)){
+			return 1
 		}
-	}
-	return 1;
+	}	
+	return -1;
 }
 
 int alocateCacheLine(int address, stateType* state, enum access_type action){
