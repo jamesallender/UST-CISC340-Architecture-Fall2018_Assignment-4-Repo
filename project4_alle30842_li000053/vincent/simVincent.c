@@ -191,12 +191,12 @@ void printCache(stateType* state){
 
 int seatchThroughCache(int address, stateType* state){
 	// loop through all sets of cache
-	setNum = getSet(address);
-	blockOffset = getBlkOffset(address);
-	addressTag = getTag(address);
+	int set = getSet(address, state);
+	int blockOffset = getBlkOffset(address, state);
+	int tag = getTag(address, state);
 		// loop through all the ways of a set
 	for (int k = 0; k < state->ways; k++ ){
-		if (getDirtyBitName(state->cacheArr[setNum][k].tag == addressTag)){
+		if (getDirtyBitName(state->cacheArr[set][k].tag == tag)){
 			return 1
 		}
 	}	
