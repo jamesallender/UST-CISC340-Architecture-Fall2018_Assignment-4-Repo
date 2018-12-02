@@ -281,9 +281,6 @@ int main(int argc, char** argv){
 	int associativity;
 
 	while((cin = getopt(argc, argv, "f:b:s:a:")) != -1){
-		printf("cheking args:\n");
-		// printf("args: %s\n", cin);
-		printf("args: %d\n", cin);
 		switch(cin)
 		{
 			case 'f':
@@ -299,12 +296,12 @@ int main(int argc, char** argv){
 				// printf("blockSizeInWords: %s\n", blockSizeInWords);
 				break;
 			case 's':
-				numSets = (int)*optarg;
+				numSets = *optarg - '0';
 				printf("numSets: %d\n", numSets);
 				// printf("numSets: %s\n", numSets);
 				break;
 			case 'a':
-				associativity = (int)*optarg;
+				associativity = *optarg - '0';
 				printf("associativity: %d\n", associativity);
 				// printf("associativity: %s\n", associativity);
 				break;
