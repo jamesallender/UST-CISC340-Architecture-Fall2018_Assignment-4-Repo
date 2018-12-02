@@ -58,6 +58,7 @@ typedef struct blockStruct {
 	enum valid_bit validBit;
 	int tag;
 	int *data;
+	int cyclesSinceLastUse;
 } blockType;
 
 typedef struct stateStruct {
@@ -413,6 +414,8 @@ int main(int argc, char** argv){
 			blockType block;
 			block.dirtyBit = clean;
 			block.validBit = invalid;
+			block.tag = 0;
+			block.cyclesSinceLastUse = 0;
 			block.data = (int*)malloc(state->wordsPerBlock * sizeof(int));
 			for (int l = 0; l < state->wordsPerBlock; l++ ){
 				block.data[l] = 0;
