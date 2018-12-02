@@ -294,7 +294,7 @@ int main(int argc, char** argv){
 				printf("FILE: %s\n", fname);
 				break;
 			case 'b':
-				blockSizeInWords = atoi(*optarg);
+				blockSizeInWords = *optarg - '0';
 				printf("blockSizeInWords: %d\n", blockSizeInWords);
 				// printf("blockSizeInWords: %s\n", blockSizeInWords);
 				break;
