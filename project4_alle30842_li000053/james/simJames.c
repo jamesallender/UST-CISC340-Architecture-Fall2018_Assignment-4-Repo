@@ -172,6 +172,7 @@ int signExtend(int num){
 // }
 
 void run(stateType* state){
+	printf("top of run!\n");
 
 	// Reused variables;
 	int instr = 0;
@@ -280,8 +281,10 @@ int main(int argc, char** argv){
 	int associativity;
 
 	while((cin = getopt(argc, argv, "f:b:s:a:")) != -1){
+		printf("cheking args:\n");
 		switch(cin)
 		{
+			printf("args: %s\n", cin);
 			case 'f':
 				fname=(char*)malloc(strlen(optarg));
 				fname[0] = '\0';
@@ -291,12 +294,15 @@ int main(int argc, char** argv){
 				break;
 			case 'b':
 				blockSizeInWords = (int)*optarg;
+				printf("blockSizeInWords: %d\n", blockSizeInWords);
 				break;
 			case 's':
 				numSets = (int)*optarg;
+				printf("numSets: %d\n", numSets);
 				break;
 			case 'a':
 				associativity = (int)*optarg;
+				printf("associativity: %d\n", associativity);
 				break;
 			case '?':
 				if(optopt == 'f'){
@@ -311,6 +317,7 @@ int main(int argc, char** argv){
 				}
 				break;
 			default:
+				printf("aborting\n");
 				abort();
 		}
 	}
