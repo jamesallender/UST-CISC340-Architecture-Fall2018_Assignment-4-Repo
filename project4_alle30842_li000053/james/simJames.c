@@ -124,6 +124,7 @@ void printCache(stateType* state){
 			for (int l = 0; l < state->wordsPerBlock; l++ ){
 				printf("\t%d | ", state->cacheArr[i][k].data[l]);
 			}
+			printf("\n");
 		}
 	}
 }
