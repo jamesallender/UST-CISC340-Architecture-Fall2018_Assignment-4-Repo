@@ -376,7 +376,7 @@ int cacheSystem(int address, stateType* state, enum access_type action, int writ
 		if(isInCache == 1){
 			// read hit
 			for(int i=0; i < state->ways; i++){
-				if(state->cacheArr[set][i].tag == tag){
+				if(state->cacheArr[set][i].validBit == valid && state->cacheArr[set][i].tag == tag){
 					readValue = state->cacheArr[set][i].data[blkOffset];
 				}
 			}
