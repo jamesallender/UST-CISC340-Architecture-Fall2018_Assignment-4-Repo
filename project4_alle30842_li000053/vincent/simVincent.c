@@ -72,7 +72,7 @@ typedef struct stateStruct {
 } stateType;
 
 // Function Headers
-int seatchThroughCache(int address, stateType* state);
+int searchCache(int address, stateType* state);
 int alocateCacheLine(int address, stateType* state, enum access_type action);
 int cacheSystem(int address, stateType* state, enum access_type action);
 int signExtend(int num);
@@ -180,6 +180,7 @@ void printCache(stateType* state){
 			printf("data:\t");
 			for (int l = 0; l < state->wordsPerBlock; l++ ){
 				printf("%d", state->cacheArr[i][k].data[l]); 
+				// printf("%p",(void *)&state->cacheArr[i][k].data[l]); 
 				if (l != state->wordsPerBlock-1){
 					printf(" | "); 
 				}
@@ -189,7 +190,7 @@ void printCache(stateType* state){
 	}
 }
 
-int seatchThroughCache(int address, stateType* state){
+int searchCache(int address, stateType* state){
 	// loop through all sets of cache
 	int set = getSet(address, state);
 	int blockOffset = getBlkOffset(address, state);
