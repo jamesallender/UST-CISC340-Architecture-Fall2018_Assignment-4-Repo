@@ -176,6 +176,8 @@ void printCache(stateType* state){
 		// loop through all the ways of a set
 		for (int k = 0; k < state->ways; k++ ){
 			printf("Way: %d\n", k);
+			printf("tag: %s\n", getDirtyBitName(state->cacheArr[i][k].tag));
+			printf("cyclesSinceLastUse: %s\n", getDirtyBitName(state->cacheArr[i][k].cyclesSinceLastUse));
 			printf("dirtyBit: %s\n", getDirtyBitName(state->cacheArr[i][k].dirtyBit));
 			printf("validBit: %s\n", getValidBitName(state->cacheArr[i][k].validBit));
 			printf("data:\t");
