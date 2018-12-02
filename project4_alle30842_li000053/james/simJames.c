@@ -262,7 +262,7 @@ void memToCache(int address, stateType* state){
 
 	blockType newBlock;
 	newBlock.dirtyBit = clean;
-	newBlock.validBit = valid_bit;
+	newBlock.validBit = valid;
 	newBlock.tag = tag;
 
 	for(int i=0; i<state->wordsPerBlock; i++){
