@@ -85,6 +85,7 @@ void print_action(int address, int size, enum action_type type);
 void printCache(stateType* state);
 void incrementCyclesSinceLastUse(stateType* state);
 void memToCache(int address, stateType* state);
+int getAddressBase(int address);
 
 // Functions
 int field0(int instruction){
@@ -234,10 +235,23 @@ int alocateCacheLine(int address, stateType* state){
 	if (state->cacheArr[set][lru].dirtyBit == dirty){
 		// write each word in the block to memory
 		for (int l = 0; l < state->wordsPerBlock; l++ ){
-			state->mem[address + l] = state->cacheArr[set][lru].data[l];
+			state->mem[getAddressBase(address) + l] = state->cacheArr[set][lru].data[l];
 		}	
 	}
 	return lru;
+}
+
+int getAddressBase(int address){
+	int words_per_blk = state->wordsPerBlock;
+	int bits_needed = log(words_per_blk) / log(2);
+	int mask = 0;
+
+	for(int i=0; i<bits_needed ;i++){
+		mask += pow(2,i);
+	}
+	int baseAddress = (address & !mask);
+
+	return baseAddress;
 }
 
 // increment the cyclesSinceLastUse for all items in cache
@@ -266,7 +280,7 @@ void memToCache(int address, stateType* state){
 	newBlock.tag = tag;
 
 	for(int i=0; i<state->wordsPerBlock; i++){
-		newBlock.data[i] = state->mem[address+i];
+		newBlock.data[i] = state->mem[getAddressBase(address) + i];
 	}
 
 	printf("**** Write from MEM to CACHE ****\n");
