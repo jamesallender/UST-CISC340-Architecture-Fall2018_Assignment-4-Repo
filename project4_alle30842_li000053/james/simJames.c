@@ -399,6 +399,8 @@ int cacheSystem(int address, stateType* state, enum access_type action, int writ
 
 	int whereInCache = searchCache(address, state);
 
+	printf("address: %d\n", address);// REMOVE
+
 
 	//processor read from mem
 	if(action == read_mem){
