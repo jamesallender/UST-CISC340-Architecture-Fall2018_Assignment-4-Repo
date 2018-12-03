@@ -46,7 +46,7 @@ typedef struct stateStruct {
 	int sets;
 	int ways;
 	int wordsPerBlock;
-	int descriptiveFlag;
+	int discriptiveFlag;
 } stateType;
 
 // Function Headers
