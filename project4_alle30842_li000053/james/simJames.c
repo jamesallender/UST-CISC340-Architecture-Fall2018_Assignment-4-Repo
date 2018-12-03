@@ -46,6 +46,7 @@ typedef struct stateStruct {
 	int sets;
 	int ways;
 	int wordsPerBlock;
+	int descriptiveFlag;
 } stateType;
 
 // Function Headers
@@ -207,28 +208,30 @@ void print_action(int address, int size, enum action_type type){
 }
 
 void printCache(stateType* state){
-	// loop through all sets of cache
-	printf("\nCache Contents:\n");
-	for (int i = 0; i < state->sets; i++ ){
-		printf("Set: %d\n", i);
-		// loop through all the ways of a set
-		for (int k = 0; k < state->ways; k++ ){
-			printf("Way: %d\n", k);
-			printf("tag: %d\n", state->cacheArr[i][k].tag);
-			printf("cyclesSinceLastUse: %d\n", state->cacheArr[i][k].cyclesSinceLastUse);
-			printf("dirtyBit: %s\n", getDirtyBitName(state->cacheArr[i][k].dirtyBit));
-			printf("validBit: %s\n", getValidBitName(state->cacheArr[i][k].validBit));
-			printf("data:\t");
-			for (int l = 0; l < state->wordsPerBlock; l++ ){
-				printf("%d", state->cacheArr[i][k].data[l]); 
-				// printf("%p",(void *)&state->cacheArr[i][k].data[l]); 
-				if (l != state->wordsPerBlock-1){
-					printf(" | "); 
+	if(state->discriptiveFlag == 1){
+		// loop through all sets of cache
+		printf("\nCache Contents:\n");
+		for (int i = 0; i < state->sets; i++ ){
+			printf("Set: %d\n", i);
+			// loop through all the ways of a set
+			for (int k = 0; k < state->ways; k++ ){
+				printf("Way: %d\n", k);
+				printf("tag: %d\n", state->cacheArr[i][k].tag);
+				printf("cyclesSinceLastUse: %d\n", state->cacheArr[i][k].cyclesSinceLastUse);
+				printf("dirtyBit: %s\n", getDirtyBitName(state->cacheArr[i][k].dirtyBit));
+				printf("validBit: %s\n", getValidBitName(state->cacheArr[i][k].validBit));
+				printf("data:\t");
+				for (int l = 0; l < state->wordsPerBlock; l++ ){
+					printf("%d", state->cacheArr[i][k].data[l]); 
+					// printf("%p",(void *)&state->cacheArr[i][k].data[l]); 
+					if (l != state->wordsPerBlock-1){
+						printf(" | "); 
+					}
 				}
+				printf("\n\n");
 			}
-			printf("\n\n");
+			printf("-------------\n");
 		}
-		printf("-------------\n");
 	}
 }
 
@@ -529,20 +532,18 @@ int main(int argc, char** argv){
 	int blockSizeInWords;
 	int numSets;
 	int associativity;
+	int discriptiveFlag = 0;
 
-	while((cin = getopt(argc, argv, "f:b:s:a:")) != -1){
+	while((cin = getopt(argc, argv, "f:b:s:a:d")) != -1){
 		switch(cin)
 		{
 			case 'f':
 				fname=(char*)malloc(strlen(optarg));
 				fname[0] = '\0';
-
 				strncpy(fname, optarg, strlen(optarg)+1);
-				printf("File: %s\n", fname);
 				break;
 			case 'b':
 				blockSizeInWords = atoi(optarg);
-				printf("blockSizeInWords: %d\n", blockSizeInWords);
 				// printf("blockSizeInWords: %s\n", blockSizeInWords);
 				break;
 			case 's':
@@ -552,7 +553,10 @@ int main(int argc, char** argv){
 				break;
 			case 'a':
 				associativity = atoi(optarg);
-				printf("associativity: %d\n", associativity);
+				// printf("associativity: %s\n", associativity);
+				break;
+			case 'd':
+				discriptiveFlag = 1;
 				// printf("associativity: %s\n", associativity);
 				break;
 			case '?':
@@ -571,6 +575,13 @@ int main(int argc, char** argv){
 				printf("aborting\n");
 				abort();
 		}
+	}
+
+	if (discriptiveFlag = 1){
+		printf("File: %s\n", fname);
+		printf("blockSizeInWords: %d\n", blockSizeInWords);
+		printf("associativity: %d\n", associativity);
+		printf("discriptiveFlag: %d\n", discriptiveFlag);
 	}
 
 	FILE *fp = fopen(fname, "r");
@@ -594,7 +605,7 @@ int main(int argc, char** argv){
 	stateType* state = (stateType*)malloc(sizeof(stateType));
 	state->pc = 0;
 
-
+	state->discriptiveFlag = discriptiveFlag;
 	state->sets = numSets;
 	state->ways = associativity;
 	state->wordsPerBlock = blockSizeInWords;
