@@ -609,6 +609,7 @@ int main(int argc, char** argv){
 			block.validBit = invalid;
 			block.tag = 0;
 			block.cyclesSinceLastUse = 0;
+			printf("state->wordsPerBlock: %d\n", state->wordsPerBlock);
 			block.data = (int*)malloc(state->wordsPerBlock * sizeof(int));
 			for (int l = 0; l < state->wordsPerBlock; l++ ){
 				block.data[l] = 0;
