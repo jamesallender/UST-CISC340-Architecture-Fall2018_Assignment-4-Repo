@@ -429,11 +429,13 @@ int cacheSystem(int address, stateType* state, enum access_type action, int writ
 		if(isHittOrMiss(whereInCache) == hit){
 			// write hit
 			state->cacheArr[set][whereInCache].data[blkOffset] = write_value;
+			state->cacheArr[set][whereInCache].dirtyBit = dirty;
 		}
 		else{
 			// write miss
 			int blockWay = memToCache(address, state);
 			state->cacheArr[set][blockWay].data[blkOffset] = write_value;
+			state->cacheArr[set][blockWay].dirtyBit = dirty;
 		}
 		printCache(state); // REMOVE
 		print_action(address, 1, processor_to_cache);
