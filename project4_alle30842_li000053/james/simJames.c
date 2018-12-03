@@ -26,6 +26,7 @@ enum valid_bit {valid, invalid};
 enum action_type {cache_to_processor, processor_to_cache, memory_to_cache, cache_to_memory,
 cache_to_nowhere};
 enum access_type {read_mem, write_mem};
+enum hit_or_miss {hit, miss};
 
 // Structures
 typedef struct cacheEntryStruct {
@@ -74,7 +75,7 @@ char* getDirtyBitName(enum dirty_bit bit)
    {
       case dirty: return "dirty";
       case clean: return "clean";
-      default: return"invalid val";
+      default: return"invalid dirty clean enum val";
    }
 }
 char* getValidBitName(enum valid_bit bit) 
@@ -83,7 +84,7 @@ char* getValidBitName(enum valid_bit bit)
    {
       case valid: return "valid";
       case invalid: return "invalid";
-      default: return"invalid val";
+      default: return"invalid vaid invalid enum val";
    }
 }
 char* getAccessTypeName(enum access_type bit) 
@@ -92,9 +93,32 @@ char* getAccessTypeName(enum access_type bit)
    {
       case read_mem: return "read_mem";
       case write_mem: return "write_mem";
-      default: return"invalid val";
+      default: return"invalid read write enum val";
    }
 }
+char* printHittOrMiss(enum hit_or_miss found) 
+{
+   switch (found) 
+   {
+      case hit: return "hit";
+      case miss: return "miss";
+      default: return"invalid hit miss enum val";
+   }
+}
+enum hit_or_miss isHittOrMiss(int found) 
+{
+   if (found == -1){
+   	return miss;
+   }
+   else if (found > -1){
+   	return hit;
+   }
+   else{
+     return"invalid hit miss enum val";
+   }
+}
+
+
 
 int field0(int instruction){
     return( (instruction>>19) & 0x7);
@@ -343,44 +367,46 @@ int cacheSystem(int address, stateType* state, enum access_type action, int writ
 	int set = getSet(address, state);
 	int blkOffset = getBlkOffset(address, state);
 
-	int isInCache = searchCache(address, state);
+	int whereInCache = searchCache(address, state);
 
 
 	//processor read from mem
 	if(action == read_mem){
 		int readValue;
-		if(isInCache == 1){
+		// hit
+		if(isHittOrMiss(whereInCache) == hit){
 			// read hit
-			for(int i=0; i < state->ways; i++){
-				if(state->cacheArr[set][i].tag == tag){
-					readValue = state->cacheArr[set][i].data[blkOffset];
-				}
-			}
-		}else{
+			readValue = state->cacheArr[set][whereInCache].data[blkOffset];
+		}
+		// miss
+		else{
 			// read miss
 			int blockWay = memToCache(address, state);
 			readValue = state->cacheArr[set][blockWay].data[blkOffset];
 		}
-		printCache(state);
+		printCache(state); // REMOVE
 		print_action(address, 1, cache_to_processor);
 		return readValue;
 	}
 
 	//process write to mem
 	else if(action == write_mem){
-		if(isInCache == 1){
+		if(isHittOrMiss(whereInCache) == hit){
 			// write hit
-
+			state->cacheArr[set][whereInCache].data[blkOffset] = write_value;
 		}
 		else{
 			// write miss
-
+			int blockWay = memToCache(address, state);
+			state->cacheArr[set][blockWay].data[blkOffset] = write_value;
 		}
+		printCache(state); // REMOVE
+		print_action(address, 1, processor_to_cache);
 		return -1;
 	}
 
 	else{
-		printf("Error in cache access\n");
+		printf("Error in cache access enum\n");
 		abort();
 	}
 }
