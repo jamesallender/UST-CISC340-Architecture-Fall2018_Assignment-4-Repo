@@ -544,20 +544,17 @@ int main(int argc, char** argv){
 				break;
 			case 'b':
 				blockSizeInWords = atoi(optarg);
-				// printf("blockSizeInWords: %s\n", blockSizeInWords);
 				break;
 			case 's':
 				numSets = atoi(optarg);
 				printf("numSets: %d\n", numSets);
-				// printf("numSets: %s\n", numSets);
 				break;
 			case 'a':
 				associativity = atoi(optarg);
-				// printf("associativity: %s\n", associativity);
 				break;
 			case 'd':
+				printf("Got discriptiveFlag!");
 				discriptiveFlag = 1;
-				// printf("associativity: %s\n", associativity);
 				break;
 			case '?':
 				if(optopt == 'f'){
