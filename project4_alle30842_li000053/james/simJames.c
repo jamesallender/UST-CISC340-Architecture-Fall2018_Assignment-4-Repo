@@ -574,18 +574,18 @@ int main(int argc, char** argv){
 	state->cacheArr = malloc(state->sets * sizeof(cacheEntryType*));
 
 	// Alocate the size of the array of the sub arrays contaning the pointers to the block structs
-	for (int i = 0; i < state->sets; i++ ){
-		state->cacheArr[i] = (cacheEntryType*)malloc(state->ways * sizeof(cacheEntryType));
+	for (int set = 0; set < state->sets; set++ ){
+		state->cacheArr[set] = (cacheEntryType*)malloc(state->ways * sizeof(cacheEntryType));
 
 		// Alocate the structs pointed to by each pointer of the sub array
-		for (int k = 0; k < state->ways; k++ ){
-			state->cacheArr[i][k].dirtyBit = clean;
-			state->cacheArr[i][k].validBit = invalid;
-			state->cacheArr[i][k].tag = 0;
-			state->cacheArr[i][k].cyclesSinceLastUse = 0;
-			state->cacheArr[i][k].data = (int*)malloc(state->wordsPerBlock * sizeof(int));
-			for (int l = 0; l < state->wordsPerBlock; l++ ){
-				state->cacheArr[i][k].data[l] = 0;
+		for (int way = 0; way < state->ways; way++ ){
+			state->cacheArr[set][way].dirtyBit = clean;
+			state->cacheArr[set][way].validBit = invalid;
+			state->cacheArr[set][way].tag = 0;
+			state->cacheArr[set][way].cyclesSinceLastUse = 0;
+			state->cacheArr[set][way].data = (int*)malloc(state->wordsPerBlock * sizeof(int));
+			for (int word = 0; word < state->wordsPerBlock; word++ ){
+				state->cacheArr[set][way].data[word] = 0;
 			}
 		}
 	}
