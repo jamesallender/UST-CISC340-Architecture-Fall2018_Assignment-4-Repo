@@ -1,0 +1,5 @@
+    lw  1   0   4       #loading address 4, size 4 to cacheEntry [1,0], TAG=0, set=1
+    lw  1   0   12       #loading address 12, size 4 to cacheEntry [1,1], TAG=1, set=1
+    lw  1   0   20      #loading address 20, size 4 to cacheEntry [1,0], TAG=2, set=1; replacing the old data in [1,0] cacheEntry (TAG=0)
+    halt
+one .fill   1           #This test will test the LRU functionality.

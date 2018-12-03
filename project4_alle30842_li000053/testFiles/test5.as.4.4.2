@@ -1,0 +1,7 @@
+    lw  1   0   0   #load (the first instruction as number) to reg1
+    sw  1   0   36  #allocate [36-39] to the cache; write reg1 to address 36; write miss
+    sw  1   0   37  #block[36-39] is in the cache; write reg1 to address 37; write hit
+    sw  1   0   38  #block[36-39] is in the cache; write reg1 to address 38; write hit
+    sw  1   0   39  #block[36-39] is in the cache; write reg1 to address 39; write hit
+    halt
+one .fill   1   #testing for "write hit and write miss"
