@@ -283,44 +283,14 @@ int memToCache(int address, stateType* state){
 
 	int way_to_write = alocateCacheLine(address, state);
 
-	blockType newBlock;
-	newBlock.dirtyBit = clean;
-	newBlock.validBit = valid;
-	newBlock.tag = tag;
-	newBlock.cyclesSinceLastUse = 0;
+	state->cacheArr[set][way_to_write].dirtyBit = clean;
+	state->cacheArr[set][way_to_write].validBit = valid;
+	state->cacheArr[set][way_to_write].tag = tag;
+	state->cacheArr[set][way_to_write].cyclesSinceLastUse = 0;
 
 	for(int i=0; i<state->wordsPerBlock; i++){
-		newBlock.data[i] = state->mem[getAddressBase(address, state) + i];
+		state->cacheArr[set][way_to_write].data[i] = state->mem[getAddressBase(address, state) + i];
 	}
-
-	// printf("**** Write from MEM to CACHE ****\n");
-	// printf("OLD Block\n");
-	// printf("dirtyBit: %s\n", getDirtyBitName(state->cacheArr[set][way_to_write].dirtyBit));
-	// printf("validBit: %s\n", getValidBitName(state->cacheArr[set][way_to_write].validBit));
-	// printf("data:\t");
-	// for (int l = 0; l < state->wordsPerBlock; l++ ){
-	// 	printf("%d", state->cacheArr[set][way_to_write].data[l]);
-	// 	// printf("%p",(void *)&state->cacheArr[i][k].data[l]);
-	// 	if (l != state->wordsPerBlock-1){
-	// 		printf(" | ");
-	// 	}
-	// }
-
-	// printf("**** Write from MEM to CACHE ****\n");
-	// printf("NEW Block\n");
-	// printf("dirtyBit: %s\n", getDirtyBitName(state->cacheArr[set][way_to_write].dirtyBit));
-	// printf("validBit: %s\n", getValidBitName(state->cacheArr[set][way_to_write].validBit));
-	// printf("data:\t");
-	// for (int l = 0; l < state->wordsPerBlock; l++ ){
-	// 	printf("%d", state->cacheArr[set][way_to_write].data[l]);
-	// 	// printf("%p",(void *)&state->cacheArr[i][k].data[l]);
-	// 	if (l != state->wordsPerBlock-1){
-	// 		printf(" | ");
-	// 	}
-	// }
-
-
-	state->cacheArr[set][way_to_write] = newBlock;
 
 	print_action(getAddressBase(address, state), state->wordsPerBlock, memory_to_cache);
 	return way_to_write;
@@ -605,16 +575,14 @@ int main(int argc, char** argv){
 
 		// Alocate the structs pointed to by each pointer of the sub array
 		for (int k = 0; k < state->ways; k++ ){
-			blockType block;
-			block.dirtyBit = clean;
-			block.validBit = invalid;
-			block.tag = 0;
-			block.cyclesSinceLastUse = 0;
-			block.data = (int*)malloc(state->wordsPerBlock * sizeof(int));
+			state->cacheArr[i][k].dirtyBit = clean;
+			state->cacheArr[i][k].validBit = invalid;
+			state->cacheArr[i][k].tag = 0;
+			state->cacheArr[i][k].cyclesSinceLastUse = 0;
+			state->cacheArr[i][k].data = (int*)malloc(state->wordsPerBlock * sizeof(int));
 			for (int l = 0; l < state->wordsPerBlock; l++ ){
-				block.data[l] = 0;
+				state->cacheArr[i][k].data[l] = 0;
 			}
-			state->cacheArr[i][k] = block;
 		}
 	}
 
