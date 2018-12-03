@@ -32,8 +32,8 @@ typedef struct blockStruct {
     enum dirty_bit dirtyBit;
 	enum valid_bit validBit;
 	int tag;
-	int cyclesSinceLastUse;
 	int *data;
+	int cyclesSinceLastUse;
 } blockType;
 
 typedef struct stateStruct {
