@@ -547,7 +547,7 @@ int main(int argc, char** argv){
 				break;
 			case 's':
 				numSets = atoi(optarg);
-				printf("numSets: %d\n", numSets);
+				
 				break;
 			case 'a':
 				associativity = atoi(optarg);
@@ -576,6 +576,7 @@ int main(int argc, char** argv){
 
 	if (discriptiveFlag == 1){
 		printf("File: %s\n", fname);
+		printf("numSets: %d\n", numSets);
 		printf("blockSizeInWords: %d\n", blockSizeInWords);
 		printf("associativity: %d\n", associativity);
 		printf("discriptiveFlag: %d\n", discriptiveFlag);
@@ -628,7 +629,6 @@ int main(int argc, char** argv){
 	}
 
 	printCache(state);
-	printf("%d\n", alocateCacheLine(0,state));
 
 	memset(state->mem, 0, NUMMEMORY*sizeof(int));
 	memset(state->reg, 0, NUMREGS*sizeof(int));
