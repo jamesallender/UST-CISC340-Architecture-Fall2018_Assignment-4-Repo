@@ -574,7 +574,7 @@ int main(int argc, char** argv){
 		}
 	}
 
-	if (discriptiveFlag = 1){
+	if (discriptiveFlag == 1){
 		printf("File: %s\n", fname);
 		printf("blockSizeInWords: %d\n", blockSizeInWords);
 		printf("associativity: %d\n", associativity);
