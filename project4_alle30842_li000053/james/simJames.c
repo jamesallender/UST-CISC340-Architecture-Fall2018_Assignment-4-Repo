@@ -301,7 +301,6 @@ int alocateCacheLine(int address, stateType* state){
 	for (int way = 0; way < state->ways; way++ ){
 		// If the current way is invalid return it to be overwriten
 		if (state->cacheArr[set][way].validBit == invalid){
-			printf("found invalid line for alocation\n");
 			return way;
 		}
 		// If the current line's cyclesSinceLastUse is greater than the current 
@@ -310,15 +309,17 @@ int alocateCacheLine(int address, stateType* state){
 			lru = way;
 		}
 	}	
-	printf("alocate atempting to write back lru\n");
 	// check if the lru way needs to be written back to memory
 	if (state->cacheArr[set][lru].dirtyBit == dirty){
-		printf("alocating lru line\n");
 		// write each word in the block to memory
 		for (int l = 0; l < state->wordsPerBlock; l++ ){
 			state->mem[getAddressBase(address, state) + l] = state->cacheArr[set][lru].data[l];
 		}	
 		print_action(address, state->wordsPerBlock, cache_to_memory);
+	}
+	else{
+		state->cacheArr[set][lru].validBit = invalid;
+		print_action(address, state->wordsPerBlock, cache_to_nowhere);
 	}
 	return lru;
 }
