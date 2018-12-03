@@ -287,6 +287,7 @@ int memToCache(int address, stateType* state){
 	newBlock.dirtyBit = clean;
 	newBlock.validBit = valid;
 	newBlock.tag = tag;
+	newBlock.cyclesSinceLastUse = 0;
 
 	for(int i=0; i<state->wordsPerBlock; i++){
 		newBlock.data[i] = state->mem[getAddressBase(address, state) + i];
@@ -609,8 +610,7 @@ int main(int argc, char** argv){
 			block.validBit = invalid;
 			block.tag = 0;
 			block.cyclesSinceLastUse = 0;
-			printf("state->wordsPerBlock: %d\n", state->wordsPerBlock);
-			block.data = (int*)malloc(state->wordsPerBlock+1 * sizeof(int));
+			block.data = (int*)malloc(state->wordsPerBlock * sizeof(int));
 			for (int l = 0; l < state->wordsPerBlock; l++ ){
 				block.data[l] = 0;
 			}
