@@ -367,7 +367,7 @@ int cacheSystem(int address, stateType* state, enum access_type action, int writ
 	}
 
 	//process write to mem
-	if(action == write_mem){
+	else if(action == write_mem){
 		if(isInCache == 1){
 			// write hit
 
@@ -379,7 +379,10 @@ int cacheSystem(int address, stateType* state, enum access_type action, int writ
 		return -1;
 	}
 
-	return -2;
+	else{
+		printf("Error in cache access\n");
+		abort();
+	}
 }
 
 int signExtend(int num){
