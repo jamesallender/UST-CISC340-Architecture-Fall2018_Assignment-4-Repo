@@ -380,12 +380,14 @@ int cacheSystem(int address, stateType* state, enum access_type action, int writ
 		if(isHittOrMiss(whereInCache) == hit){
 			// read hit
 			readValue = state->cacheArr[set][whereInCache].data[blkOffset];
+			printf("read hit\n");
 		}
 		// miss
 		else{
 			// read miss
 			int blockWay = memToCache(address, state);
 			readValue = state->cacheArr[set][blockWay].data[blkOffset];
+			printf("read miss\n");
 		}
 		printCache(state); // REMOVE
 		print_action(address, 1, cache_to_processor);
@@ -397,11 +399,13 @@ int cacheSystem(int address, stateType* state, enum access_type action, int writ
 		if(isHittOrMiss(whereInCache) == hit){
 			// write hit
 			state->cacheArr[set][whereInCache].data[blkOffset] = write_value;
+			printf("write hit\n");
 		}
 		else{
 			// write miss
 			int blockWay = memToCache(address, state);
 			state->cacheArr[set][blockWay].data[blkOffset] = write_value;
+			printf("write miss\n");
 		}
 		printCache(state); // REMOVE
 		print_action(address, 1, processor_to_cache);
