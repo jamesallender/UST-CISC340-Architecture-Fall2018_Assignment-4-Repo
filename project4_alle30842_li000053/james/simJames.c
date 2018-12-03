@@ -28,20 +28,20 @@ cache_to_nowhere};
 enum access_type {read_mem, write_mem};
 
 // Structures
-typedef struct blockStruct {
+typedef struct cacheEntryStruct {
     enum dirty_bit dirtyBit;
 	enum valid_bit validBit;
 	int tag;
 	int *data;
 	int cyclesSinceLastUse;
-} blockType;
+} cacheEntryType;
 
 typedef struct stateStruct {
     int pc;
 	int mem[NUMMEMORY];
 	int reg[NUMREGS];
 	int numMemory;
-	blockType **cacheArr;
+	cacheEntryType **cacheArr;
 	int sets;
 	int ways;
 	int wordsPerBlock;
@@ -64,7 +64,7 @@ void print_action(int address, int size, enum action_type type);
 void printCache(stateType* state);
 void incrementCyclesSinceLastUse(stateType* state);
 int memToCache(int address, stateType* state);
-int cacheToMem(int address, stateType* state);
+void cacheToMem(int address, stateType* state);
 int getAddressBase(int address, stateType* state);
 
 // Functions
@@ -208,15 +208,15 @@ void printCache(stateType* state){
 	}
 }
 
-// return 1 if the given address is in cache otherwise -1
+// return >= 0 way contaning the address if the given address is in cache otherwise -1
 int searchCache(int address, stateType* state){
 	int set = getSet(address, state);
 	int tag = getTag(address, state);
 	// loop through all the ways of the address's set
-	for (int k = 0; k < state->ways; k++ ){
+	for (int way = 0; way < state->ways; way++ ){
 		// if the tag is found in the set return 1
-		if (state->cacheArr[set][k].validBit == valid && state->cacheArr[set][k].tag == tag){
-			return 1;
+		if (state->cacheArr[set][way].validBit == valid && state->cacheArr[set][way].tag == tag){
+			return way;
 		}
 	}	
 	// otherwise return -1
@@ -245,8 +245,8 @@ int alocateCacheLine(int address, stateType* state){
 		for (int l = 0; l < state->wordsPerBlock; l++ ){
 			state->mem[getAddressBase(address, state) + l] = state->cacheArr[set][lru].data[l];
 		}	
+		print_action(address, state->wordsPerBlock, cache_to_memory);
 	}
-	print_action(address, state->wordsPerBlock, cache_to_nowhere);
 	return lru;
 }
 
@@ -296,26 +296,30 @@ int memToCache(int address, stateType* state){
 	return way_to_write;
 }
 
-int cacheToMem(int address, stateType* state){
+void cacheToMem(int address, stateType* state){
 	int tag = getTag(address, state);
 	int set = getSet(address, state);
 	int blkOffset = getBlkOffset(address, state);
 
-	int way_to_write = alocateCacheLine(address, state);
+	// Get the way of the address
+	int way_to_write = searchCache(address, state);
 
-	blockType newBlock;
-	newBlock.dirtyBit = clean;
-	newBlock.validBit = valid;
-	newBlock.tag = tag;
-
-	for(int i=0; i<state->wordsPerBlock; i++){
-		newBlock.data[i] = state->mem[getAddressBase(address, state) + i];
+	// if the address is in cache and valid
+	if (way_to_write != -1){
+		// check if the way_to_write way needs to be written back to memory (is dirty)
+		if (state->cacheArr[set][way_to_write].dirtyBit == dirty){
+			// write each word in the block to memory
+			for (int word = 0; word < state->wordsPerBlock; l++ ){
+				state->mem[getAddressBase(address, state) + word] = state->cacheArr[set][way_to_write].data[word];
+			}	
+			print_action(address, state->wordsPerBlock, cache_to_memory);
+		}
 	}
 
-	state->cacheArr[set][way_to_write] = newBlock;
+	// make cache entry invalid
+	state->cacheArr[set][way_to_write].validBit = invalid;
 
-	print_action(address, state->wordsPerBlock, cache_to_memory);
-	return 1;
+	print_action(address, state->wordsPerBlock, memory_to_cache);
 }
 
 
@@ -567,11 +571,11 @@ int main(int argc, char** argv){
 	state->wordsPerBlock = blockSizeInWords;
 
 	// Alocate our cache array the size of the number of sets/lines we have contaning pointers to the array of blocks in each set
-	state->cacheArr = malloc(state->sets * sizeof(blockType*));
+	state->cacheArr = malloc(state->sets * sizeof(cacheEntryType*));
 
 	// Alocate the size of the array of the sub arrays contaning the pointers to the block structs
 	for (int i = 0; i < state->sets; i++ ){
-		state->cacheArr[i] = (blockType*)malloc(state->ways * sizeof(blockType));
+		state->cacheArr[i] = (cacheEntryType*)malloc(state->ways * sizeof(cacheEntryType));
 
 		// Alocate the structs pointed to by each pointer of the sub array
 		for (int k = 0; k < state->ways; k++ ){
