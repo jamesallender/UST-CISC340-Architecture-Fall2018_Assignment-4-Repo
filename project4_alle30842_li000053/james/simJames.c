@@ -425,6 +425,10 @@ int cacheSystem(int address, stateType* state, enum access_type action, int writ
 	else if(action == write_mem){
 		if(isHittOrMiss(whereInCache) == hit){
 			// write hit
+			printf("set %d\n", set);
+			printf("wayInCache %d\n", whereInCache);
+			printf("blkOffset %d\n", blkOffset);
+			printf("tag %d\n", tag);
 			state->cacheArr[set][whereInCache].data[blkOffset] = write_value;
 			printf("write hit\n");
 		}
