@@ -68,6 +68,7 @@ void incrementCyclesSinceLastUse(stateType* state);
 int memToCache(int address, stateType* state);
 void cacheToMem(int address, stateType* state);
 int getAddressBase(int address, stateType* state);
+void printInstruction(int instr);
 
 // Functions
 char* getDirtyBitName(enum dirty_bit bit) 
@@ -177,6 +178,32 @@ int getBlkOffset(int address, stateType* state){
 	int offset = (address & mask);
 
 	return offset;
+}
+
+void printInstruction(int instr){
+    char opcodeString[10];
+    if (opcode(instr) == ADD) {
+	strcpy(opcodeString, "add");
+    } else if (opcode(instr) == NAND) {
+	strcpy(opcodeString, "nand");
+    } else if (opcode(instr) == LW) {
+	strcpy(opcodeString, "lw");
+    } else if (opcode(instr) == SW) {
+	strcpy(opcodeString, "sw");
+    } else if (opcode(instr) == BEQ) {
+	strcpy(opcodeString, "beq");
+    } else if (opcode(instr) == JALR) {
+	strcpy(opcodeString, "jalr");
+    } else if (opcode(instr) == HALT) {
+	strcpy(opcodeString, "halt");
+    } else if (opcode(instr) == NOOP) {
+	strcpy(opcodeString, "noop");
+    } else {
+	strcpy(opcodeString, "data");
+    }
+
+    printf("%s %d %d %d\n", opcodeString, field0(instr), field1(instr),
+	field2(instr));
 }
 
 /*
@@ -447,6 +474,8 @@ void run(stateType* state){
 		// Instruction Fetch
 		// instr = state->mem[state->pc];
 		instr = cacheSystem(state->pc, state, read_mem, -1);
+
+		printInstruction(instr); // REMOVE
 
 		/* check for halt */
 		if (opcode(instr) == HALT) {
