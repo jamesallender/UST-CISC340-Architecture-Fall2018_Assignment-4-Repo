@@ -26,6 +26,7 @@ enum valid_bit {valid, invalid};
 enum action_type {cache_to_processor, processor_to_cache, memory_to_cache, cache_to_memory,
 cache_to_nowhere};
 enum access_type {read_mem, write_mem};
+enum hit_or_miss {hit, miss};
 
 // Structures
 typedef struct cacheEntryStruct {
@@ -45,6 +46,7 @@ typedef struct stateStruct {
 	int sets;
 	int ways;
 	int wordsPerBlock;
+	int discriptiveFlag;
 } stateType;
 
 // Function Headers
@@ -66,6 +68,7 @@ void incrementCyclesSinceLastUse(stateType* state);
 int memToCache(int address, stateType* state);
 void cacheToMem(int address, stateType* state);
 int getAddressBase(int address, stateType* state);
+void printInstruction(int instr);
 
 // Functions
 char* getDirtyBitName(enum dirty_bit bit) 
@@ -74,7 +77,7 @@ char* getDirtyBitName(enum dirty_bit bit)
    {
       case dirty: return "dirty";
       case clean: return "clean";
-      default: return"invalid val";
+      default: return"invalid dirty clean enum val";
    }
 }
 char* getValidBitName(enum valid_bit bit) 
@@ -83,7 +86,7 @@ char* getValidBitName(enum valid_bit bit)
    {
       case valid: return "valid";
       case invalid: return "invalid";
-      default: return"invalid val";
+      default: return"invalid vaid invalid enum val";
    }
 }
 char* getAccessTypeName(enum access_type bit) 
@@ -92,9 +95,32 @@ char* getAccessTypeName(enum access_type bit)
    {
       case read_mem: return "read_mem";
       case write_mem: return "write_mem";
-      default: return"invalid val";
+      default: return"invalid read write enum val";
    }
 }
+char* printHittOrMiss(enum hit_or_miss found) 
+{
+   switch (found) 
+   {
+      case hit: return "hit";
+      case miss: return "miss";
+      default: return"invalid hit miss enum val";
+   }
+}
+enum hit_or_miss isHittOrMiss(int found) 
+{
+   if (found == -1){
+   	return miss;
+   }
+   else if (found > -1){
+   	return hit;
+   }
+   else{
+     abort();
+   }
+}
+
+
 
 int field0(int instruction){
     return( (instruction>>19) & 0x7);
@@ -129,13 +155,16 @@ int getSet(int address, stateType* state){
 	int bits_needed = log(num_of_set) / log(2);
 	int mask = 0;
 
-
+	int words_per_blk = state->wordsPerBlock;
+	int blkOffset_bits_needed = log(words_per_blk) / log(2);
 
 	for(int i=0; i<bits_needed ;i++){
 		mask += pow(2,i);
 	}
 
-	int set = (address & mask);
+	int set = address >> blkOffset_bits_needed;
+
+	set = (set & mask);
 
 	return set;
 }
@@ -152,6 +181,32 @@ int getBlkOffset(int address, stateType* state){
 	int offset = (address & mask);
 
 	return offset;
+}
+
+void printInstruction(int instr){
+    char opcodeString[10];
+    if (opcode(instr) == ADD) {
+	strcpy(opcodeString, "add");
+    } else if (opcode(instr) == NAND) {
+	strcpy(opcodeString, "nand");
+    } else if (opcode(instr) == LW) {
+	strcpy(opcodeString, "lw");
+    } else if (opcode(instr) == SW) {
+	strcpy(opcodeString, "sw");
+    } else if (opcode(instr) == BEQ) {
+	strcpy(opcodeString, "beq");
+    } else if (opcode(instr) == JALR) {
+	strcpy(opcodeString, "jalr");
+    } else if (opcode(instr) == HALT) {
+	strcpy(opcodeString, "halt");
+    } else if (opcode(instr) == NOOP) {
+	strcpy(opcodeString, "noop");
+    } else {
+	strcpy(opcodeString, "data");
+    }
+
+    printf("%s %d %d %d\n", opcodeString, field0(instr), field1(instr),
+	field2(instr));
 }
 
 /*
@@ -183,28 +238,30 @@ void print_action(int address, int size, enum action_type type){
 }
 
 void printCache(stateType* state){
-	// loop through all sets of cache
-	printf("\nCache Contents:\n");
-	for (int i = 0; i < state->sets; i++ ){
-		printf("Set: %d\n", i);
-		// loop through all the ways of a set
-		for (int k = 0; k < state->ways; k++ ){
-			printf("Way: %d\n", k);
-			printf("tag: %d\n", state->cacheArr[i][k].tag);
-			printf("cyclesSinceLastUse: %d\n", state->cacheArr[i][k].cyclesSinceLastUse);
-			printf("dirtyBit: %s\n", getDirtyBitName(state->cacheArr[i][k].dirtyBit));
-			printf("validBit: %s\n", getValidBitName(state->cacheArr[i][k].validBit));
-			printf("data:\t");
-			for (int l = 0; l < state->wordsPerBlock; l++ ){
-				printf("%d", state->cacheArr[i][k].data[l]); 
-				// printf("%p",(void *)&state->cacheArr[i][k].data[l]); 
-				if (l != state->wordsPerBlock-1){
-					printf(" | "); 
+	if(state->discriptiveFlag == 1){
+		// loop through all sets of cache
+		printf("\nCache Contents:\n");
+		for (int i = 0; i < state->sets; i++ ){
+			printf("Set: %d\n", i);
+			// loop through all the ways of a set
+			for (int k = 0; k < state->ways; k++ ){
+				printf("Way: %d\n", k);
+				printf("tag: %d\n", state->cacheArr[i][k].tag);
+				printf("cyclesSinceLastUse: %d\n", state->cacheArr[i][k].cyclesSinceLastUse);
+				printf("dirtyBit: %s\n", getDirtyBitName(state->cacheArr[i][k].dirtyBit));
+				printf("validBit: %s\n", getValidBitName(state->cacheArr[i][k].validBit));
+				printf("data:\t");
+				for (int l = 0; l < state->wordsPerBlock; l++ ){
+					printf("%d", state->cacheArr[i][k].data[l]); 
+					// printf("%p",(void *)&state->cacheArr[i][k].data[l]); 
+					if (l != state->wordsPerBlock-1){
+						printf(" | "); 
+					}
 				}
+				printf("\n\n");
 			}
-			printf("\n\n");
+			printf("-------------\n");
 		}
-		printf("-------------\n");
 	}
 }
 
@@ -343,44 +400,56 @@ int cacheSystem(int address, stateType* state, enum access_type action, int writ
 	int set = getSet(address, state);
 	int blkOffset = getBlkOffset(address, state);
 
-	int isInCache = searchCache(address, state);
+	int whereInCache = searchCache(address, state);
+
+	printf("address: %d\n", address);// REMOVE
 
 
 	//processor read from mem
 	if(action == read_mem){
 		int readValue;
-		if(isInCache == 1){
+		// hit
+		if(isHittOrMiss(whereInCache) == hit){
 			// read hit
-			for(int i=0; i < state->ways; i++){
-				if(state->cacheArr[set][i].tag == tag){
-					readValue = state->cacheArr[set][i].data[blkOffset];
-				}
-			}
-		}else{
+			printf("read hit\n");// REMOVE
+			readValue = state->cacheArr[set][whereInCache].data[blkOffset];
+		}
+		// miss
+		else{
 			// read miss
+			printf("read miss\n"); // REMOVE
 			int blockWay = memToCache(address, state);
 			readValue = state->cacheArr[set][blockWay].data[blkOffset];
 		}
-		printCache(state);
+		printCache(state); // REMOVE
 		print_action(address, 1, cache_to_processor);
 		return readValue;
 	}
 
 	//process write to mem
 	else if(action == write_mem){
-		if(isInCache == 1){
+		if(isHittOrMiss(whereInCache) == hit){
 			// write hit
-
+			printf("write hit\n");// REMOVE
+			printf("set %d\n", set);// REMOVE
+			printf("wayInCache %d\n", whereInCache);// REMOVE
+			printf("blkOffset %d\n", blkOffset);// REMOVE
+			printf("tag %d\n", tag);// REMOVE
+			state->cacheArr[set][whereInCache].data[blkOffset] = write_value;
 		}
 		else{
 			// write miss
-
+			printf("write miss\n");// REMOVE
+			int blockWay = memToCache(address, state);
+			state->cacheArr[set][blockWay].data[blkOffset] = write_value;
 		}
+		printCache(state); // REMOVE
+		print_action(address, 1, processor_to_cache);
 		return -1;
 	}
 
 	else{
-		printf("Error in cache access\n");
+		printf("Error in cache access enum\n");
 		abort();
 	}
 }
@@ -414,6 +483,8 @@ void run(stateType* state){
 		// Instruction Fetch
 		// instr = state->mem[state->pc];
 		instr = cacheSystem(state->pc, state, read_mem, -1);
+
+		printInstruction(instr); // REMOVE
 
 		/* check for halt */
 		if (opcode(instr) == HALT) {
@@ -503,31 +574,29 @@ int main(int argc, char** argv){
 	int blockSizeInWords;
 	int numSets;
 	int associativity;
+	int discriptiveFlag = 0;
 
-	while((cin = getopt(argc, argv, "f:b:s:a:")) != -1){
+	while((cin = getopt(argc, argv, "f:b:s:a:d")) != -1){
 		switch(cin)
 		{
 			case 'f':
 				fname=(char*)malloc(strlen(optarg));
 				fname[0] = '\0';
-
 				strncpy(fname, optarg, strlen(optarg)+1);
-				printf("File: %s\n", fname);
 				break;
 			case 'b':
 				blockSizeInWords = atoi(optarg);
-				printf("blockSizeInWords: %d\n", blockSizeInWords);
-				// printf("blockSizeInWords: %s\n", blockSizeInWords);
 				break;
 			case 's':
 				numSets = atoi(optarg);
-				printf("numSets: %d\n", numSets);
-				// printf("numSets: %s\n", numSets);
+				
 				break;
 			case 'a':
 				associativity = atoi(optarg);
-				printf("associativity: %d\n", associativity);
-				// printf("associativity: %s\n", associativity);
+				break;
+			case 'd':
+				printf("Got discriptiveFlag!");
+				discriptiveFlag = 1;
 				break;
 			case '?':
 				if(optopt == 'f'){
@@ -545,6 +614,14 @@ int main(int argc, char** argv){
 				printf("aborting\n");
 				abort();
 		}
+	}
+
+	if (discriptiveFlag == 1){
+		printf("File: %s\n", fname);
+		printf("numSets: %d\n", numSets);
+		printf("blockSizeInWords: %d\n", blockSizeInWords);
+		printf("associativity: %d\n", associativity);
+		printf("discriptiveFlag: %d\n", discriptiveFlag);
 	}
 
 	FILE *fp = fopen(fname, "r");
@@ -568,7 +645,7 @@ int main(int argc, char** argv){
 	stateType* state = (stateType*)malloc(sizeof(stateType));
 	state->pc = 0;
 
-
+	state->discriptiveFlag = discriptiveFlag;
 	state->sets = numSets;
 	state->ways = associativity;
 	state->wordsPerBlock = blockSizeInWords;
@@ -594,7 +671,6 @@ int main(int argc, char** argv){
 	}
 
 	printCache(state);
-	printf("%d\n", alocateCacheLine(0,state));
 
 	memset(state->mem, 0, NUMMEMORY*sizeof(int));
 	memset(state->reg, 0, NUMREGS*sizeof(int));

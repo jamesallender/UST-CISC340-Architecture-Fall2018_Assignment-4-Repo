@@ -155,13 +155,16 @@ int getSet(int address, stateType* state){
 	int bits_needed = log(num_of_set) / log(2);
 	int mask = 0;
 
-
+	int words_per_blk = state->wordsPerBlock;
+	int blkOffset_bits_needed = log(words_per_blk) / log(2);
 
 	for(int i=0; i<bits_needed ;i++){
 		mask += pow(2,i);
 	}
 
-	int set = (address & mask);
+	int set = address >> blkOffset_bits_needed;
+
+	set = (set & mask);
 
 	return set;
 }
