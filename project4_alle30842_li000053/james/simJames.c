@@ -412,6 +412,10 @@ int cacheSystem(int address, stateType* state, enum access_type action, int writ
 		if(isHittOrMiss(whereInCache) == hit){
 			// read hit
 			printf("read hit\n");// REMOVE
+			printf("set %d\n", set);// REMOVE
+			printf("wayInCache %d\n", whereInCache);// REMOVE
+			printf("blkOffset %d\n", blkOffset);// REMOVE
+			printf("tag %d\n", tag);// REMOVE
 			readValue = state->cacheArr[set][whereInCache].data[blkOffset];
 		}
 		// miss
@@ -419,6 +423,10 @@ int cacheSystem(int address, stateType* state, enum access_type action, int writ
 			// read miss
 			printf("read miss\n"); // REMOVE
 			int blockWay = memToCache(address, state);
+			printf("set %d\n", set);// REMOVE
+			printf("blockWay %d\n", blockWay);// REMOVE
+			printf("blkOffset %d\n", blkOffset);// REMOVE
+			printf("tag %d\n", tag);// REMOVE
 			readValue = state->cacheArr[set][blockWay].data[blkOffset];
 		}
 		printCache(state); // REMOVE
@@ -441,6 +449,10 @@ int cacheSystem(int address, stateType* state, enum access_type action, int writ
 			// write miss
 			printf("write miss\n");// REMOVE
 			int blockWay = memToCache(address, state);
+			printf("set %d\n", set);// REMOVE
+			printf("blockWay %d\n", blockWay);// REMOVE
+			printf("blkOffset %d\n", blkOffset);// REMOVE
+			printf("tag %d\n", tag);// REMOVE
 			state->cacheArr[set][blockWay].data[blkOffset] = write_value;
 		}
 		printCache(state); // REMOVE
