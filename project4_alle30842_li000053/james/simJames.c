@@ -298,7 +298,7 @@ int alocateCacheLine(int address, stateType* state){
 	int set = getSet(address, state);
 	int lru = 0;
 	// loop through all the ways of a set
-	for (int k = 0; way < state->ways; way++ ){
+	for (int way = 0; way < state->ways; way++ ){
 		// If the current way is invalid return it to be overwriten
 		if (state->cacheArr[set][way].validBit == invalid){
 			printf("found invalid line for alocation\n");
