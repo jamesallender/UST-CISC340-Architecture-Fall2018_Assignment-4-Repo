@@ -298,19 +298,22 @@ int alocateCacheLine(int address, stateType* state){
 	int set = getSet(address, state);
 	int lru = 0;
 	// loop through all the ways of a set
-	for (int k = 0; k < state->ways; k++ ){
+	for (int k = 0; way < state->ways; way++ ){
 		// If the current way is invalid return it to be overwriten
-		if (state->cacheArr[set][k].validBit == invalid){
-			return k;
+		if (state->cacheArr[set][way].validBit == invalid){
+			printf("found invalid line for alocation\n");
+			return way;
 		}
 		// If the current line's cyclesSinceLastUse is greater than the current 
 		// lru's cyclesSinceLastUse change the lru to the current way
-		if (state->cacheArr[set][k].cyclesSinceLastUse > state->cacheArr[set][lru].cyclesSinceLastUse){
-			lru = k;
+		if (state->cacheArr[set][way].cyclesSinceLastUse > state->cacheArr[set][lru].cyclesSinceLastUse){
+			lru = way;
 		}
 	}	
+	printf("alocate atempting to write back lru\n");
 	// check if the lru way needs to be written back to memory
 	if (state->cacheArr[set][lru].dirtyBit == dirty){
+		printf("alocating lru line\n");
 		// write each word in the block to memory
 		for (int l = 0; l < state->wordsPerBlock; l++ ){
 			state->mem[getAddressBase(address, state) + l] = state->cacheArr[set][lru].data[l];
@@ -473,7 +476,9 @@ void run(stateType* state){
 		// instr = state->mem[state->pc];
 		instr = cacheSystem(state->pc, state, read_mem, -1);
 
-		printInstruction(instr); // REMOVE
+		if (state->discriptiveFlag == 1){
+			printInstruction(instr);
+		}
 
 		/* check for halt */
 		if (opcode(instr) == HALT) {
