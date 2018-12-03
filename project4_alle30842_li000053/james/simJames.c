@@ -183,6 +183,19 @@ int getBlkOffset(int address, stateType* state){
 	return offset;
 }
 
+int getAddressBase(int address, stateType* state){
+	int words_per_blk = state->wordsPerBlock;
+	int bits_needed = log(words_per_blk) / log(2);
+	int mask = 0;
+
+	for(int i=0; i<bits_needed ;i++){
+		mask += pow(2,i);
+	}
+	int baseAddress = (address & (~mask));
+
+	return baseAddress;
+}
+
 void printInstruction(int instr){
     char opcodeString[10];
     if (opcode(instr) == ADD) {
@@ -305,19 +318,6 @@ int alocateCacheLine(int address, stateType* state){
 		print_action(address, state->wordsPerBlock, cache_to_memory);
 	}
 	return lru;
-}
-
-int getAddressBase(int address, stateType* state){
-	int words_per_blk = state->wordsPerBlock;
-	int bits_needed = log(words_per_blk) / log(2);
-	int mask = 0;
-
-	for(int i=0; i<bits_needed ;i++){
-		mask += pow(2,i);
-	}
-	int baseAddress = (address & !mask);
-
-	return baseAddress;
 }
 
 // increment the cyclesSinceLastUse for all items in cache
