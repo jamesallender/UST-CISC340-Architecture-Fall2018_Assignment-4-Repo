@@ -309,7 +309,7 @@ void cacheToMem(int address, stateType* state){
 		// check if the way_to_write way needs to be written back to memory (is dirty)
 		if (state->cacheArr[set][way_to_write].dirtyBit == dirty){
 			// write each word in the block to memory
-			for (int word = 0; word < state->wordsPerBlock; l++ ){
+			for (int word = 0; word < state->wordsPerBlock; word++ ){
 				state->mem[getAddressBase(address, state) + word] = state->cacheArr[set][way_to_write].data[word];
 			}	
 			print_action(address, state->wordsPerBlock, cache_to_memory);
