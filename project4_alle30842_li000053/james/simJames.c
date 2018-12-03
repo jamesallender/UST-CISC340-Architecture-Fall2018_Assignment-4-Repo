@@ -114,7 +114,7 @@ enum hit_or_miss isHittOrMiss(int found)
    	return hit;
    }
    else{
-     return"invalid hit miss enum val";
+     abort();
    }
 }
 
