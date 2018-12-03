@@ -334,11 +334,17 @@ void incrementCyclesSinceLastUse(stateType* state){
 // int blockOffset = getBlkOffset(address, state);
 
 int memToCache(int address, stateType* state){
+	printf("memToCache address: %d\n", address);// REMOVE
 	int tag = getTag(address, state);
 	int set = getSet(address, state);
 	int blkOffset = getBlkOffset(address, state);
 
 	int way_to_write = alocateCacheLine(address, state);
+
+	printf("memToCache set %d\n", set);// REMOVE
+	printf("memToCache way_to_write %d\n", way_to_write);// REMOVE
+	printf("memToCache blkOffset %d\n", blkOffset);// REMOVE
+	printf("memToCache tag %d\n", tag);// REMOVE
 
 	state->cacheArr[set][way_to_write].dirtyBit = clean;
 	state->cacheArr[set][way_to_write].validBit = valid;
