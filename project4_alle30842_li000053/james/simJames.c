@@ -311,6 +311,7 @@ int alocateCacheLine(int address, stateType* state){
 	}	
 	// check if the lru way needs to be written back to memory
 	if (state->cacheArr[set][lru].dirtyBit == dirty){
+		printf("writeback\n");
 		// write each word in the block to memory
 		for (int l = 0; l < state->wordsPerBlock; l++ ){
 			state->mem[getAddressBase(address, state) + l] = state->cacheArr[set][lru].data[l];
