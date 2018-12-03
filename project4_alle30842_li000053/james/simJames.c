@@ -334,19 +334,11 @@ void incrementCyclesSinceLastUse(stateType* state){
 // int blockOffset = getBlkOffset(address, state);
 
 int memToCache(int address, stateType* state){
-	printf("memToCache address: %d\n", address);// REMOVE
-	printf("getAddressBase: %d\n", getAddressBase(address, state));// REMOVE
-
 	int tag = getTag(address, state);
 	int set = getSet(address, state);
 	int blkOffset = getBlkOffset(address, state);
 
 	int way_to_write = alocateCacheLine(address, state);
-
-	printf("memToCache set %d\n", set);// REMOVE
-	printf("memToCache way_to_write %d\n", way_to_write);// REMOVE
-	printf("memToCache blkOffset %d\n", blkOffset);// REMOVE
-	printf("memToCache tag %d\n", tag);// REMOVE
 
 	state->cacheArr[set][way_to_write].dirtyBit = clean;
 	state->cacheArr[set][way_to_write].validBit = valid;
@@ -410,31 +402,18 @@ int cacheSystem(int address, stateType* state, enum access_type action, int writ
 
 	int whereInCache = searchCache(address, state);
 
-	printf("address: %d\n", address);// REMOVE
-
-
 	//processor read from mem
 	if(action == read_mem){
 		int readValue;
 		// hit
 		if(isHittOrMiss(whereInCache) == hit){
 			// read hit
-			printf("read hit\n");// REMOVE
-			printf("set %d\n", set);// REMOVE
-			printf("wayInCache %d\n", whereInCache);// REMOVE
-			printf("blkOffset %d\n", blkOffset);// REMOVE
-			printf("tag %d\n", tag);// REMOVE
 			readValue = state->cacheArr[set][whereInCache].data[blkOffset];
 		}
 		// miss
 		else{
 			// read miss
-			printf("read miss\n"); // REMOVE
 			int blockWay = memToCache(address, state);
-			printf("set %d\n", set);// REMOVE
-			printf("blockWay %d\n", blockWay);// REMOVE
-			printf("blkOffset %d\n", blkOffset);// REMOVE
-			printf("tag %d\n", tag);// REMOVE
 			readValue = state->cacheArr[set][blockWay].data[blkOffset];
 		}
 		printCache(state); // REMOVE
@@ -446,21 +425,11 @@ int cacheSystem(int address, stateType* state, enum access_type action, int writ
 	else if(action == write_mem){
 		if(isHittOrMiss(whereInCache) == hit){
 			// write hit
-			printf("write hit\n");// REMOVE
-			printf("set %d\n", set);// REMOVE
-			printf("wayInCache %d\n", whereInCache);// REMOVE
-			printf("blkOffset %d\n", blkOffset);// REMOVE
-			printf("tag %d\n", tag);// REMOVE
 			state->cacheArr[set][whereInCache].data[blkOffset] = write_value;
 		}
 		else{
 			// write miss
-			printf("write miss\n");// REMOVE
 			int blockWay = memToCache(address, state);
-			printf("set %d\n", set);// REMOVE
-			printf("blockWay %d\n", blockWay);// REMOVE
-			printf("blkOffset %d\n", blkOffset);// REMOVE
-			printf("tag %d\n", tag);// REMOVE
 			state->cacheArr[set][blockWay].data[blkOffset] = write_value;
 		}
 		printCache(state); // REMOVE
