@@ -316,11 +316,11 @@ int alocateCacheLine(int address, stateType* state){
 		for (int l = 0; l < state->wordsPerBlock; l++ ){
 			state->mem[getAddressBase(address, state) + l] = state->cacheArr[set][lru].data[l];
 		}	
-		print_action(address, state->wordsPerBlock, cache_to_memory);
+		print_action(getAddressBase(address, state), state->wordsPerBlock, cache_to_memory);
 	}
 	else{
 		state->cacheArr[set][lru].validBit = invalid;
-		print_action(address, state->wordsPerBlock, cache_to_nowhere);
+		print_action(getAddressBase(address, state), state->wordsPerBlock, cache_to_nowhere);
 	}
 	return lru;
 }
@@ -367,21 +367,23 @@ void cacheToMem(int address, stateType* state){
 	int way_to_write = searchCache(address, state);
 
 	// if the address is in cache and valid
-	if (way_to_write != -1){
+	if (isHittOrMiss(way_to_write) == hit){
 		// check if the way_to_write way needs to be written back to memory (is dirty)
 		if (state->cacheArr[set][way_to_write].dirtyBit == dirty){
 			// write each word in the block to memory
 			for (int word = 0; word < state->wordsPerBlock; word++ ){
 				state->mem[getAddressBase(address, state) + word] = state->cacheArr[set][way_to_write].data[word];
 			}	
-			print_action(address, state->wordsPerBlock, cache_to_memory);
+			print_action(getAddressBase(address, state), state->wordsPerBlock, cache_to_memory);
+		}
+		else{
+			printf("tried to move cach to mem but no dirty data found\n");
 		}
 	}
-
 	// make cache entry invalid
 	state->cacheArr[set][way_to_write].validBit = invalid;
 
-	print_action(address, state->wordsPerBlock, memory_to_cache);
+	// print_action(getAddressBase(address, state), state->wordsPerBlock, memory_to_cache);
 }
 
 
