@@ -599,7 +599,7 @@ int main(int argc, char** argv){
 
 	// Alocate the size of the array of the sub arrays contaning the pointers to the block structs
 	for (int i = 0; i < state->sets; i++ ){
-		state->cacheArr[i] = (blockType*)malloc(state->ways * sizeof(blockType));
+		state->cacheArr[i] = (blockType)malloc(state->ways * sizeof(blockType));
 
 		// Alocate the structs pointed to by each pointer of the sub array
 		for (int k = 0; k < state->ways; k++ ){
