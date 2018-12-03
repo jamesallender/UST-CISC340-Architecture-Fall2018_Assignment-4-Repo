@@ -1,0 +1,5 @@
+    lw  1   0   0   #load (the first instruction as number) to reg1
+    sw  1   0   20  #allocate [20-23] to the cache; write reg1 to the address 20
+    sw  1   0   52  #allocate [52-55] to the cache; write reg1 to the address 52
+    halt
+one .fill   1       #testing the write-back functionality; block [20-23] and [52-55] shoubld both write back to the memory before the program halt.
