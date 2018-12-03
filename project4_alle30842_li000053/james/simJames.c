@@ -32,8 +32,8 @@ typedef struct blockStruct {
     enum dirty_bit dirtyBit;
 	enum valid_bit validBit;
 	int tag;
-	int *data;
 	int cyclesSinceLastUse;
+	int *data;
 } blockType;
 
 typedef struct stateStruct {
@@ -246,6 +246,7 @@ int alocateCacheLine(int address, stateType* state){
 			state->mem[getAddressBase(address, state) + l] = state->cacheArr[set][lru].data[l];
 		}	
 	}
+	print_action(address, state->wordsPerBlock, cache_to_nowhere);
 	return lru;
 }
 
@@ -358,7 +359,7 @@ int cacheToMem(int address, stateType* state){
 	// * cache_to_nowhere: evicting cache data by throwing it away
 	// */
 	// print_action(address, 1, action_type);
-	// print_action(address, state->wordsPerBlock, action_type);
+	// print_action(address, state->wordsPerBlock, cache_to_nowhere);
 
 int cacheSystem(int address, stateType* state, enum access_type action, int write_value){
 	incrementCyclesSinceLastUse(state);
@@ -599,7 +600,7 @@ int main(int argc, char** argv){
 
 	// Alocate the size of the array of the sub arrays contaning the pointers to the block structs
 	for (int i = 0; i < state->sets; i++ ){
-		state->cacheArr[i] = (blockType)malloc(state->ways * sizeof(blockType));
+		state->cacheArr[i] = (blockType*)malloc(state->ways * sizeof(blockType));
 
 		// Alocate the structs pointed to by each pointer of the sub array
 		for (int k = 0; k < state->ways; k++ ){
