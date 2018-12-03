@@ -335,6 +335,8 @@ void incrementCyclesSinceLastUse(stateType* state){
 
 int memToCache(int address, stateType* state){
 	printf("memToCache address: %d\n", address);// REMOVE
+	printf("getAddressBase: %d\n", getAddressBase(address, state));// REMOVE
+
 	int tag = getTag(address, state);
 	int set = getSet(address, state);
 	int blkOffset = getBlkOffset(address, state);
