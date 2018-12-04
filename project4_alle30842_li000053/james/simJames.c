@@ -66,7 +66,7 @@ void print_action(int address, int size, enum action_type type);
 void printCache(stateType* state);
 void incrementCyclesSinceLastUse(stateType* state);
 int memToCache(int address, stateType* state);
-void cacheToMem(int address, stateType* state);
+void cacheToMem(int address, stateType* state, int way);
 int getAddressBase(int address, stateType* state);
 void printInstruction(int instr);
 int buildAddress(int tag, int set, int blockOffset, stateType* state);
