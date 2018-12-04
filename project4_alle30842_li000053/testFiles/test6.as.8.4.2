@@ -1,0 +1,8 @@
+    lw  1   0   36  #allocate [36-39] to the cache; load value in address 36 to reg1; read miss
+    lw  2   0   52  #allocate [52-55] to the cache; load value in address 52 to reg2; read miss
+    lw  3   0   37  #block[36-39] is in the cache; load value in address 37 to reg3; read hit
+    lw  4   0   38  #block[36-39] is in the cache; load value in address 38 to reg4; read hit
+    lw  5   0   53  #block[52-55] is in the cache; load value in address 53 to reg5; read hit
+    lw  6   0   54  #block[52-55] is in the cache; load value in address 54 to reg6; read hit
+    halt
+one .fill 1         #testing for "read hit and read miss"
