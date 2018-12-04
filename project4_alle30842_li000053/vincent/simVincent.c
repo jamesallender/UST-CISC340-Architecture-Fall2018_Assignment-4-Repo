@@ -69,6 +69,7 @@ int memToCache(int address, stateType* state);
 void cacheToMem(int address, stateType* state);
 int getAddressBase(int address, stateType* state);
 void printInstruction(int instr);
+void getAddressBack(int tag, int set, int blkOffset, stateType* state);
 
 // Functions
 char* getDirtyBitName(enum dirty_bit bit) 
@@ -181,6 +182,16 @@ int getBlkOffset(int address, stateType* state){
 	int offset = (address & mask);
 
 	return offset;
+}
+
+void getAddressBack(int tag, int set, int blkOffset, stateType* state){
+	int num_blkOffset = state->wordsPerBlock;
+	int num_set = state->sets;
+
+	int address = tag << (num_blkOffset + num_set);
+	address = address & (set << num_blkOffset) & blkOffset;
+
+	return address;
 }
 
 void printInstruction(int instr){
