@@ -25,7 +25,7 @@ enum dirty_bit {dirty, clean};
 enum valid_bit {valid, invalid};
 enum action_type {cache_to_processor, processor_to_cache, memory_to_cache, cache_to_memory,
 cache_to_nowhere};
-enum access_type {read_mem, write_mem};
+enum access_type {read_mem, write_mem, halt};
 enum hit_or_miss {hit, miss};
 
 // Structures
@@ -96,6 +96,7 @@ char* getAccessTypeName(enum access_type bit)
    {
       case read_mem: return "read_mem";
       case write_mem: return "write_mem";
+      case halt: return "halt";
       default: return"invalid read write enum val";
    }
 }
@@ -335,10 +336,10 @@ int alocateCacheLine(int address, stateType* state){
 // increment the cyclesSinceLastUse for all items in cache
 void incrementCyclesSinceLastUse(stateType* state){
 	// loop through all sets of cache
-	for (int i = 0; i < state->sets; i++ ){
+	for (int set = 0; set < state->sets; set++ ){
 		// loop through all the ways of a set
-		for (int k = 0; k < state->ways; k++ ){
-			state->cacheArr[i][k].cyclesSinceLastUse = state->cacheArr[i][k].cyclesSinceLastUse + 1;
+		for (int way = 0; way < state->ways; way++ ){
+			state->cacheArr[set][way].cyclesSinceLastUse = state->cacheArr[set][way].cyclesSinceLastUse + 1;
 		}
 	}
 }
@@ -446,6 +447,22 @@ int cacheSystem(int address, stateType* state, enum access_type action, int writ
 		return -1;
 	}
 
+	else if (action == halt){
+		// loop through all sets of cache
+		for (int set = 0; set < state->sets; set++ ){
+			// loop through all the ways of a set
+			for (int way = 0; way < state->ways; way++ ){
+				// if the way contains valid dirty data make its address and write that block to memory
+				if(state->cacheArr[set][way].validBit == valid && state->cacheArr[set][way].dirtyBit == dirty){
+					int moveAddress = buildAddress(state->cacheArr[set][way].tag, set, 0, state);
+					cacheToMem(moveAddress, state, way);
+				}
+				// invalidate all cache lines
+				state->cacheArr[set][way].validBit = invalid;
+			}
+		}
+	}
+
 	else{
 		printf("Error in cache access enum\n");
 		abort();
@@ -488,6 +505,7 @@ void run(stateType* state){
 
 		/* check for halt */
 		if (opcode(instr) == HALT) {
+			cacheSystem(state->pc, state, halt, -1);
 		    printf("machine halted\n");
 			break;
 		}
