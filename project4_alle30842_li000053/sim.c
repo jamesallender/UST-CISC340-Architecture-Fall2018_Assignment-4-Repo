@@ -469,6 +469,8 @@ int cacheSystem(int address, stateType* state, enum access_type action, int writ
 		printf("Error in cache access enum\n");
 		abort();
 	}
+
+	return;
 }
 
 int signExtend(int num){

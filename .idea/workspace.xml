@@ -11,7 +11,7 @@
   <component name="ChangeListManager">
     <list default="true" id="0e396b4b-f592-406f-a092-91c0762cae03" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project4_alle30842_li000053/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/project4_alle30842_li000053/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project4_alle30842_li000053/sim.c" beforeDir="false" afterPath="$PROJECT_DIR$/project4_alle30842_li000053/sim.c" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -21,11 +21,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/project4_alle30842_li000053/sim.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="8520">
-              <caret line="568" selection-start-line="568" selection-end-line="568" />
+            <state relative-caret-position="529">
+              <caret line="472" column="11" selection-start-line="472" selection-start-column="11" selection-end-line="472" selection-end-column="11" />
             </state>
           </provider>
         </entry>
@@ -40,28 +40,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/project4_alle30842_li000053/vincent/simVincent.c">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2895">
-              <caret line="193" column="19" selection-start-line="193" selection-start-column="19" selection-end-line="193" selection-end-column="19" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/project4_alle30842_li000053/james/simJames.c">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="222" column="39" selection-start-line="222" selection-start-column="39" selection-end-line="222" selection-end-column="39" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/project4_alle30842_li000053/README.md">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="330">
-              <caret line="22" column="10" lean-forward="true" selection-start-line="22" selection-start-column="10" selection-end-line="22" selection-end-column="10" />
+              <caret line="22" column="17" lean-forward="true" selection-start-line="22" selection-start-column="17" selection-end-line="22" selection-end-column="17" />
             </state>
           </provider>
         </entry>
@@ -72,6 +54,7 @@
     <findStrings>
       <find>cachetomem</find>
       <find>cache_to_pro</find>
+      <find>nowhere</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -88,6 +71,7 @@
         <option value="$PROJECT_DIR$/project4_alle30842_li000053/testFiles/test4.as.4.4.2" />
         <option value="$PROJECT_DIR$/project4_alle30842_li000053/vincent/simVincent.c" />
         <option value="$PROJECT_DIR$/project4_alle30842_li000053/README.md" />
+        <option value="$PROJECT_DIR$/project4_alle30842_li000053/sim.c" />
       </list>
     </option>
   </component>
@@ -117,18 +101,6 @@
               <item name="cisc340_project4" type="b2602c69:ProjectViewProjectNode" />
               <item name="cisc340_project4" type="462c0819:PsiDirectoryNode" />
               <item name="project4_alle30842_li000053" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="cisc340_project4" type="b2602c69:ProjectViewProjectNode" />
-              <item name="cisc340_project4" type="462c0819:PsiDirectoryNode" />
-              <item name="project4_alle30842_li000053" type="462c0819:PsiDirectoryNode" />
-              <item name="testFiles" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="cisc340_project4" type="b2602c69:ProjectViewProjectNode" />
-              <item name="cisc340_project4" type="462c0819:PsiDirectoryNode" />
-              <item name="project4_alle30842_li000053" type="462c0819:PsiDirectoryNode" />
-              <item name="vincent" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -165,19 +137,19 @@
       <updated>1543353963501</updated>
       <workItem from="1543353964754" duration="2827000" />
       <workItem from="1543777739729" duration="6733000" />
-      <workItem from="1543959122617" duration="842000" />
+      <workItem from="1543959122617" duration="2183000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="13624000" />
+    <option name="totallyTimeSpent" value="14965000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="949" y="23" width="971" height="1105" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49406528" visible="true" weight="0.14531754" />
-      <window_info id="Structure" order="1" sideWeight="0.5059347" side_tool="true" visible="true" weight="0.14531754" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.4925816" weight="0.27664155" />
+      <window_info id="Structure" order="1" sideWeight="0.5074184" side_tool="true" visible="true" weight="0.27664155" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
@@ -195,6 +167,26 @@
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Database" order="3" />
     </layout>
+    <layout-to-restore>
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.4925816" visible="true" weight="0.27664155" />
+      <window_info id="Structure" order="1" sideWeight="0.5074184" side_tool="true" visible="true" weight="0.27664155" />
+      <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Terminal" order="9" visible="true" weight="0.33464956" />
+      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Database" order="3" />
+    </layout-to-restore>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
@@ -236,10 +228,24 @@
     <entry file="file://$PROJECT_DIR$/project4_alle30842_li000053/james/Makefile">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/project4_alle30842_li000053/sim.c">
+    <entry file="file://$PROJECT_DIR$/project4_alle30842_li000053/vincent/simVincent.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="8520">
-          <caret line="568" selection-start-line="568" selection-end-line="568" />
+        <state relative-caret-position="2895">
+          <caret line="193" column="19" selection-start-line="193" selection-start-column="19" selection-end-line="193" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project4_alle30842_li000053/README.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="22" column="17" lean-forward="true" selection-start-line="22" selection-start-column="17" selection-end-line="22" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project4_alle30842_li000053/james/simJames.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3881">
+          <caret line="259" column="39" selection-start-line="259" selection-start-column="32" selection-end-line="259" selection-end-column="39" />
         </state>
       </provider>
     </entry>
@@ -250,24 +256,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/project4_alle30842_li000053/vincent/simVincent.c">
+    <entry file="file://$PROJECT_DIR$/project4_alle30842_li000053/sim.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2895">
-          <caret line="193" column="19" selection-start-line="193" selection-start-column="19" selection-end-line="193" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/project4_alle30842_li000053/james/simJames.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="222" column="39" selection-start-line="222" selection-start-column="39" selection-end-line="222" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/project4_alle30842_li000053/README.md">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="22" column="10" lean-forward="true" selection-start-line="22" selection-start-column="10" selection-end-line="22" selection-end-column="10" />
+        <state relative-caret-position="529">
+          <caret line="472" column="11" selection-start-line="472" selection-start-column="11" selection-end-line="472" selection-end-column="11" />
         </state>
       </provider>
     </entry>
