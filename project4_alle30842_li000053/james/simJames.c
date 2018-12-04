@@ -196,13 +196,11 @@ int getAddressBase(int address, stateType* state){
 }
 
 int buildAddress(int tag, int set, int blockOffset, stateType* state){
-	int words_per_blk = state->wordsPerBlock;
-	int blkOffsetBits = log(words_per_blk) / log(2);
-	int num_of_set = state->sets;
-	int setBits = log(num_of_set) / log(2);
+	int blkOffsetBits = log(state->wordsPerBlock) / log(2);
+	int setBits = log(state->sets) / log(2);
 
 	tag = tag << (setBits + blkOffsetBits);
-	set = set << setBits;
+	set = set << blkOffsetBits;
 
 	return tag & set & blockOffset;
 }
