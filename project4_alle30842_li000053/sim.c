@@ -470,7 +470,7 @@ int cacheSystem(int address, stateType* state, enum access_type action, int writ
 		abort();
 	}
 
-	return;
+	return -1;
 }
 
 int signExtend(int num){
