@@ -199,16 +199,10 @@ int buildAddress(int tag, int set, int blockOffset, stateType* state){
 	int blkOffsetBits = log(state->wordsPerBlock) / log(2);
 	int setBits = log(state->sets) / log(2);
 
-	printf("buildAddress tag: %d\n", tag);
-	printf("buildAddress set: %d\n", set);
-	printf("buildAddress blockOffset: %d\n", blockOffset);
-
 	tag = tag << (setBits + blkOffsetBits);
 	set = set << blkOffsetBits;
 
 	int address = tag | set | blockOffset;
-
-	printf("buildAddress address: %d\n", address);
 
 	return address;
 }
@@ -329,7 +323,6 @@ int alocateCacheLine(int address, stateType* state){
 	// check if the lru way needs to be written back to memory
 	if (state->cacheArr[set][lru].dirtyBit == dirty){
 		int lruAddress = buildAddress(state->cacheArr[set][lru].tag, set, 0, state);
-		printf("writeback\n");
 		cacheToMem(lruAddress, state, lru);
 	}
 	else{
