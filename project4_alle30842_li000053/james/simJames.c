@@ -199,14 +199,15 @@ int buildAddress(int tag, int set, int blockOffset, stateType* state){
 	int blkOffsetBits = log(state->wordsPerBlock) / log(2);
 	int setBits = log(state->sets) / log(2);
 
-	tag = tag << (setBits + blkOffsetBits);
-	set = set << blkOffsetBits;
-
-	int address = tag & set & blockOffset;
-
 	printf("buildAddress tag: %d\n", tag);
 	printf("buildAddress set: %d\n", set);
 	printf("buildAddress blockOffset: %d\n", blockOffset);
+
+	tag = tag << (setBits + blkOffsetBits);
+	set = set << blkOffsetBits;
+
+	int address = tag | set | blockOffset;
+
 	printf("buildAddress address: %d\n", address);
 
 	return address;
