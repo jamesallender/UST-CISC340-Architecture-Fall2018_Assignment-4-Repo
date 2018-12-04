@@ -378,7 +378,8 @@ void cacheToMem(int address, stateType* state, int way){
 		print_action(getAddressBase(address, state), state->wordsPerBlock, cache_to_memory);
 	}
 	else{
-		printf("tried to move cach to mem but no dirty data found\n");
+		printf("tried to move cach to mem but no dirty data found, tried to do: ");
+		print_action(getAddressBase(address, state), state->wordsPerBlock, cache_to_memory);
 	}
 	// make cache entry invalid
 	state->cacheArr[set][way].validBit = invalid;
