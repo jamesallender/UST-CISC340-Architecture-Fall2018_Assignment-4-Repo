@@ -4,7 +4,9 @@ CISC-340
 Project 04
 README
 
-simulator.c 
+sim.c - This file is the C source code for our cache simulator
+    Compile using the command $make to build our project using the included make file
+    Run with syntax $./sim - f "input file path" -b "block size in word" -s "number of set/line" -a "associativity"
 
 Makefile - This is a makefile to be used with Make to build our project
 	Run comand [$make] to create our project
@@ -14,3 +16,8 @@ Makefile - This is a makefile to be used with Make to build our project
 README.me - This README file
 
 Test Files (./testFiles/):
+        test1.as.4.2.1: test example from the project description, to ensure program operates correctly
+        test2.as.4.2.2: test to ensure the LRU functionality in the program operates currently.
+        test3.as.4.2.2: test to ensure the write-back functionality operates correctly.
+        test4.as.4.4.2: test to ensure the program "read hit" and "read miss" correctly.
+        test5.as.4.4.2: test to ensure the program "write hit" and "write miss" correctly.

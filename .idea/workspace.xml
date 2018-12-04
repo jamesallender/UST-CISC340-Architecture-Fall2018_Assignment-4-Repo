@@ -11,7 +11,7 @@
   <component name="ChangeListManager">
     <list default="true" id="0e396b4b-f592-406f-a092-91c0762cae03" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/project4_alle30842_li000053/vincent/simVincent.c" beforeDir="false" afterPath="$PROJECT_DIR$/project4_alle30842_li000053/vincent/simVincent.c" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/project4_alle30842_li000053/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/project4_alle30842_li000053/README.md" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -24,7 +24,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/project4_alle30842_li000053/sim.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="728">
+            <state relative-caret-position="8520">
               <caret line="568" selection-start-line="568" selection-end-line="568" />
             </state>
           </provider>
@@ -39,11 +39,29 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/project4_alle30842_li000053/vincent/simVincent.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="496">
+            <state relative-caret-position="2895">
               <caret line="193" column="19" selection-start-line="193" selection-start-column="19" selection-end-line="193" selection-end-column="19" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/project4_alle30842_li000053/james/simJames.c">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="102">
+              <caret line="222" column="39" selection-start-line="222" selection-start-column="39" selection-end-line="222" selection-end-column="39" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/project4_alle30842_li000053/README.md">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="330">
+              <caret line="22" column="10" lean-forward="true" selection-start-line="22" selection-start-column="10" selection-end-line="22" selection-end-column="10" />
             </state>
           </provider>
         </entry>
@@ -52,8 +70,8 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>cache_to_pro</find>
       <find>cachetomem</find>
+      <find>cache_to_pro</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -69,14 +87,15 @@
         <option value="$PROJECT_DIR$/project4_alle30842_li000053/testFiles/test5.as.4.4.2" />
         <option value="$PROJECT_DIR$/project4_alle30842_li000053/testFiles/test4.as.4.4.2" />
         <option value="$PROJECT_DIR$/project4_alle30842_li000053/vincent/simVincent.c" />
+        <option value="$PROJECT_DIR$/project4_alle30842_li000053/README.md" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds" fullScreen="true">
-    <option name="x" value="278" />
-    <option name="y" value="26" />
-    <option name="width" value="1125" />
-    <option name="height" value="1101" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="949" />
+    <option name="y" value="23" />
+    <option name="width" value="971" />
+    <option name="height" value="1105" />
   </component>
   <component name="ProjectLevelVcsManager">
     <ConfirmationsSetting value="2" id="Add" />
@@ -98,12 +117,6 @@
               <item name="cisc340_project4" type="b2602c69:ProjectViewProjectNode" />
               <item name="cisc340_project4" type="462c0819:PsiDirectoryNode" />
               <item name="project4_alle30842_li000053" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="cisc340_project4" type="b2602c69:ProjectViewProjectNode" />
-              <item name="cisc340_project4" type="462c0819:PsiDirectoryNode" />
-              <item name="project4_alle30842_li000053" type="462c0819:PsiDirectoryNode" />
-              <item name="james" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="cisc340_project4" type="b2602c69:ProjectViewProjectNode" />
@@ -152,18 +165,19 @@
       <updated>1543353963501</updated>
       <workItem from="1543353964754" duration="2827000" />
       <workItem from="1543777739729" duration="6733000" />
+      <workItem from="1543959122617" duration="842000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="12180000" />
+    <option name="totallyTimeSpent" value="13624000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1920" height="1200" extended-state="0" />
+    <frame x="949" y="23" width="971" height="1105" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49557522" visible="true" weight="0.15761448" />
-      <window_info id="Structure" order="1" sideWeight="0.50442475" side_tool="true" visible="true" weight="0.15761448" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49406528" visible="true" weight="0.14531754" />
+      <window_info id="Structure" order="1" sideWeight="0.5059347" side_tool="true" visible="true" weight="0.14531754" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
@@ -174,7 +188,7 @@
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" show_stripe_button="false" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.3" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="9" visible="true" weight="0.33464956" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -187,20 +201,6 @@
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/project3_alle30842_li000053/sim.c" />
-    <entry file="file://$PROJECT_DIR$/project4_alle30842_li000053/sim.c">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="728">
-          <caret line="568" selection-start-line="568" selection-end-line="568" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/project4_alle30842_li000053/Makefile">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="5" column="5" selection-start-line="5" selection-start-column="5" selection-end-line="5" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/project4_alle30842_li000053/testFiles/test1.as.4.2.1">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -233,17 +233,41 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/project4_alle30842_li000053/james/simJames.c">
+    <entry file="file://$PROJECT_DIR$/project4_alle30842_li000053/james/Makefile">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project4_alle30842_li000053/sim.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="229">
-          <caret line="360" column="15" selection-start-line="360" selection-start-column="5" selection-end-line="360" selection-end-column="15" />
+        <state relative-caret-position="8520">
+          <caret line="568" selection-start-line="568" selection-end-line="568" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project4_alle30842_li000053/Makefile">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="5" selection-start-line="5" selection-start-column="5" selection-end-line="5" selection-end-column="5" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/project4_alle30842_li000053/vincent/simVincent.c">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="496">
+        <state relative-caret-position="2895">
           <caret line="193" column="19" selection-start-line="193" selection-start-column="19" selection-end-line="193" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project4_alle30842_li000053/james/simJames.c">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="222" column="39" selection-start-line="222" selection-start-column="39" selection-end-line="222" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/project4_alle30842_li000053/README.md">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="22" column="10" lean-forward="true" selection-start-line="22" selection-start-column="10" selection-end-line="22" selection-end-column="10" />
         </state>
       </provider>
     </entry>
