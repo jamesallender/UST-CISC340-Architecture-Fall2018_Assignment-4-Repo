@@ -69,6 +69,7 @@ int memToCache(int address, stateType* state);
 void cacheToMem(int address, stateType* state);
 int getAddressBase(int address, stateType* state);
 void printInstruction(int instr);
+int buildAddress(int tag, int set, int blockOffset, stateType* state);
 
 // Functions
 char* getDirtyBitName(enum dirty_bit bit) 
@@ -119,8 +120,6 @@ enum hit_or_miss isHittOrMiss(int found)
      abort();
    }
 }
-
-
 
 int field0(int instruction){
     return( (instruction>>19) & 0x7);
@@ -194,6 +193,18 @@ int getAddressBase(int address, stateType* state){
 	int baseAddress = (address & (~mask));
 
 	return baseAddress;
+}
+
+int buildAddress(int tag, int set, int blockOffset, stateType* state){
+	int words_per_blk = state->wordsPerBlock;
+	int blkOffsetBits = log(words_per_blk) / log(2);
+	int num_of_set = state->sets;
+	int setBits = log(num_of_set) / log(2);
+
+	tag = tag << (setBits + blkOffsetBits);
+	set = set << setBits;
+
+	return tag & set & blockOffset;
 }
 
 void printInstruction(int instr){
@@ -311,12 +322,9 @@ int alocateCacheLine(int address, stateType* state){
 	}	
 	// check if the lru way needs to be written back to memory
 	if (state->cacheArr[set][lru].dirtyBit == dirty){
+		int lruAddress = buildAddress(tag & set & 0)
 		printf("writeback\n");
-		// write each word in the block to memory
-		for (int l = 0; l < state->wordsPerBlock; l++ ){
-			state->mem[getAddressBase(address, state) + l] = state->cacheArr[set][lru].data[l];
-		}	
-		print_action(getAddressBase(address, state), state->wordsPerBlock, cache_to_memory);
+		cacheToMem(lruAddress, state, lru);
 	}
 	else{
 		state->cacheArr[set][lru].validBit = invalid;
@@ -358,32 +366,24 @@ int memToCache(int address, stateType* state){
 	return way_to_write;
 }
 
-void cacheToMem(int address, stateType* state){
+void cacheToMem(int address, stateType* state, int way){
 	int tag = getTag(address, state);
 	int set = getSet(address, state);
 	int blkOffset = getBlkOffset(address, state);
 
-	// Get the way of the address
-	int way_to_write = searchCache(address, state);
-
-	// if the address is in cache and valid
-	if (isHittOrMiss(way_to_write) == hit){
-		// check if the way_to_write way needs to be written back to memory (is dirty)
-		if (state->cacheArr[set][way_to_write].dirtyBit == dirty){
-			// write each word in the block to memory
-			for (int word = 0; word < state->wordsPerBlock; word++ ){
-				state->mem[getAddressBase(address, state) + word] = state->cacheArr[set][way_to_write].data[word];
-			}	
-			print_action(getAddressBase(address, state), state->wordsPerBlock, cache_to_memory);
-		}
-		else{
-			printf("tried to move cach to mem but no dirty data found\n");
-		}
+	// check if the way_to_write way needs to be written back to memory (is dirty)
+	if (state->cacheArr[set][way].dirtyBit == dirty){
+		// write each word in the block to memory
+		for (int word = 0; word < state->wordsPerBlock; word++ ){
+			state->mem[getAddressBase(address, state) + word] = state->cacheArr[set][way].data[word];
+		}	
+		print_action(getAddressBase(address, state), state->wordsPerBlock, cache_to_memory);
+	}
+	else{
+		printf("tried to move cach to mem but no dirty data found\n");
 	}
 	// make cache entry invalid
 	state->cacheArr[set][way_to_write].validBit = invalid;
-
-	print_action(getAddressBase(address, state), state->wordsPerBlock, memory_to_cache);
 }
 
 
