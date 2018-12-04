@@ -321,13 +321,13 @@ int alocateCacheLine(int address, stateType* state){
 		}
 	}	
 	// check if the lru way needs to be written back to memory
+	int lruAddress = buildAddress(state->cacheArr[set][lru].tag, set, 0, state);
 	if (state->cacheArr[set][lru].dirtyBit == dirty){
-		int lruAddress = buildAddress(state->cacheArr[set][lru].tag, set, 0, state);
 		cacheToMem(lruAddress, state, lru);
 	}
 	else{
 		state->cacheArr[set][lru].validBit = invalid;
-		print_action(getAddressBase(address, state), state->wordsPerBlock, cache_to_nowhere);
+		print_action(getAddressBase(lruAddress, state), state->wordsPerBlock, cache_to_nowhere);
 	}
 	return lru;
 }
