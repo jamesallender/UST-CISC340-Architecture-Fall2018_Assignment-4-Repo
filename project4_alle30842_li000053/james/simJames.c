@@ -322,7 +322,7 @@ int alocateCacheLine(int address, stateType* state){
 	}	
 	// check if the lru way needs to be written back to memory
 	if (state->cacheArr[set][lru].dirtyBit == dirty){
-		int lruAddress = buildAddress(state->cacheArr[set][lru].tag, set, 0, state)
+		int lruAddress = buildAddress(state->cacheArr[set][lru].tag, set, 0, state);
 		printf("writeback\n");
 		cacheToMem(lruAddress, state, lru);
 	}
@@ -383,7 +383,7 @@ void cacheToMem(int address, stateType* state, int way){
 		printf("tried to move cach to mem but no dirty data found\n");
 	}
 	// make cache entry invalid
-	state->cacheArr[set][way_to_write].validBit = invalid;
+	state->cacheArr[set][way].validBit = invalid;
 }
 
 
