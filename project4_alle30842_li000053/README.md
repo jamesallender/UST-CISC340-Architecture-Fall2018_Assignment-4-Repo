@@ -4,7 +4,7 @@ CISC-340
 Project 04
 README
 
-sim.c - This file is the C source code for our cache simulator
+cacheSim.c - This file is the C source code for our cache simulator
     Compile using the command $make to build our project using the included make file
     Run with syntax $./sim - f "input file path" -b "block size in word" -s "number of set/line" -a "associativity"
 

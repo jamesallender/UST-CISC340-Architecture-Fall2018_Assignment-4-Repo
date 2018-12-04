@@ -3,11 +3,11 @@ CFLAGS=`pkg-config --cflags gmodule-2.0`
 
 LDFLAGS=`pkg-config --libs gmodule-2.0`
 
-all: sim.o
-	$(CC) $(CFLAGS) sim.o -o sim $(LDFLAGS) -lm
+all: cacheSim.o
+	$(CC) $(CFLAGS) cacheSim.o -o cacheSim $(LDFLAGS) -lm
 
-sim.o: sim.c
-	$(CC) $(CFLAGS) -c sim.c
+cacheSim.o: cacheSim.c
+	$(CC) $(CFLAGS) -c cacheSim.c
 
 clean:
-	rm sim *.o *.*~ *~
+	rm cacheSim *.o *.*~ *~

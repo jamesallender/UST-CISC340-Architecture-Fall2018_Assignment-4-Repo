@@ -514,7 +514,7 @@ void run(stateType* state){
 		// instr = state->mem[state->pc];
 		instr = cacheSystem(state->pc, state, read_mem, -1);
 
-		if (state->discriptiveFlag == 1|| 1){
+		if (state->discriptiveFlag == 1){
 			printInstruction(instr);
 		}
 
