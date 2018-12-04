@@ -383,7 +383,7 @@ void cacheToMem(int address, stateType* state){
 	// make cache entry invalid
 	state->cacheArr[set][way_to_write].validBit = invalid;
 
-	// print_action(getAddressBase(address, state), state->wordsPerBlock, memory_to_cache);
+	print_action(getAddressBase(address, state), state->wordsPerBlock, memory_to_cache);
 }
 
 
