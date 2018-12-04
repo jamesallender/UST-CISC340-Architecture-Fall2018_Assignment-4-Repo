@@ -21,3 +21,4 @@ Test Files (./testFiles/):
         test3.as.4.2.2: test to ensure the write-back functionality operates correctly.
         test4.as.4.4.2: test to ensure the program "read hit" and "read miss" correctly.
         test5.as.4.4.2: test to ensure the program "write hit" and "write miss" correctly.
+        test6.as.8.4.2: This test is verry simmilar to test 4 but it uses a block size of 8 to ensure that blocks are being placed correctly
