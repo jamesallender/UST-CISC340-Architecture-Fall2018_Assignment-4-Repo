@@ -142,28 +142,36 @@ int getTag(int address, stateType* state){
 	int words_per_blk = state->wordsPerBlock;
 	int num_of_set = state->sets;
 
+	//to get the number of bits to represent set and the number of bits to represent block offset
 	int bits_blkOffset = log(words_per_blk)/log(2);
 	int bits_set = log(num_of_set)/log(2);
 
+	//cut all the bits which represent the set number and block offset.
 	int tag = address >> (bits_blkOffset + bits_set);
 
 	return tag;
 }
 
 int getSet(int address, stateType* state){
+
+	//to get the number of bits to represent set
 	int num_of_set = state->sets;
 	int bits_needed = log(num_of_set) / log(2);
 	int mask = 0;
 
+	//to get the number of bits to represent block offset
 	int words_per_blk = state->wordsPerBlock;
 	int blkOffset_bits_needed = log(words_per_blk) / log(2);
 
+	//to build the mask for getting corresponding bits for set in given address
 	for(int i=0; i<bits_needed ;i++){
 		mask += pow(2,i);
 	}
 
+	//cut all block offset based on the number of bits to represent the block offset
 	int set = address >> blkOffset_bits_needed;
 
+	//masking
 	set = (set & mask);
 
 	return set;
@@ -183,6 +191,7 @@ int getBlkOffset(int address, stateType* state){
 	return offset;
 }
 
+//get the base address based on the given address
 int getAddressBase(int address, stateType* state){
 	int words_per_blk = state->wordsPerBlock;
 	int bits_needed = log(words_per_blk) / log(2);
@@ -196,10 +205,12 @@ int getAddressBase(int address, stateType* state){
 	return baseAddress;
 }
 
+//build back the address based on tag, set, and block offset
 int buildAddress(int tag, int set, int blockOffset, stateType* state){
 	int blkOffsetBits = log(state->wordsPerBlock) / log(2);
 	int setBits = log(state->sets) / log(2);
 
+	//left shift every element in correct position
 	tag = tag << (setBits + blkOffsetBits);
 	set = set << blkOffsetBits;
 
