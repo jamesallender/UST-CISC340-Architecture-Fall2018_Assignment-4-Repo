@@ -344,15 +344,15 @@ void incrementCyclesSinceLastUse(stateType* state){
 	}
 }
 
-// int blockOffset = getBlkOffset(address, state);
-
 int memToCache(int address, stateType* state){
 	int tag = getTag(address, state);
 	int set = getSet(address, state);
 	int blkOffset = getBlkOffset(address, state);
 
+	//find the available way in the set to write
 	int way_to_write = alocateCacheLine(address, state);
 
+	//overwrite the the way with the new data from mem
 	state->cacheArr[set][way_to_write].dirtyBit = clean;
 	state->cacheArr[set][way_to_write].validBit = valid;
 	state->cacheArr[set][way_to_write].tag = tag;
