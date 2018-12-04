@@ -461,9 +461,11 @@ int cacheSystem(int address, stateType* state, enum access_type action, int writ
 				state->cacheArr[set][way].validBit = invalid;
 			}
 		}
+		printCache(state);
 	}
 
 	else{
+		printCache(state);
 		printf("Error in cache access enum\n");
 		abort();
 	}
