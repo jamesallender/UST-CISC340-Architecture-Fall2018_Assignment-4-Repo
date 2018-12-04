@@ -202,7 +202,14 @@ int buildAddress(int tag, int set, int blockOffset, stateType* state){
 	tag = tag << (setBits + blkOffsetBits);
 	set = set << blkOffsetBits;
 
-	return tag & set & blockOffset;
+	int address = tag & set & blockOffset;
+
+	printf("buildAddress tag: %d\n", tag);
+	printf("buildAddress set: %d\n", set);
+	printf("buildAddress blockOffset: %d\n", blockOffset);
+	printf("buildAddress address: %d\n", address);
+
+	return address;
 }
 
 void printInstruction(int instr){
