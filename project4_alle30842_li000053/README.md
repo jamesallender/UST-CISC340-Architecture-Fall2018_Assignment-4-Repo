@@ -24,4 +24,4 @@ Test Files (./testFiles/):
         test4.as.4.4.2: test to ensure the program "read hit" and "read miss" correctly.
         test5.as.4.4.2: test to ensure the program "write hit" and "write miss" correctly.
         test6.as.8.4.2: This test is verry simmilar to test 4 but it uses a block size of 8 to ensure that blocks are being placed correctly
-        test7.as.4.1.2: This is again verry simmilar to test 4 but it tests a fully asoiative cache rather than a blend aprotch
+        test7.as.4.1.8: This is again verry simmilar to test 4 but it tests a fully asoiative cache rather than a blend aprotch
