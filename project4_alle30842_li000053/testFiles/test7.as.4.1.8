@@ -1,8 +1,13 @@
-    lw  1   0   36  #allocate [36-39] to the cache; load value in address 36 to reg1; read miss
-    lw  2   0   52  #allocate [52-55] to the cache; load value in address 52 to reg2; read miss
-    lw  3   0   37  #block[36-39] is in the cache; load value in address 37 to reg3; read hit
-    lw  4   0   38  #block[36-39] is in the cache; load value in address 38 to reg4; read miss
-    lw  5   0   53  #block[52-55] is in the cache; load value in address 53 to reg5; read hit
-    lw  6   0   54  #block[52-55] is in the cache; load value in address 54 to reg6; read hit
+    lw  1   0   one  #allocate [36-39] to the cache; load value in address 36 to reg1; read miss
+    lw  2   0   two  #allocate [52-55] to the cache; load value in address 52 to reg2; read miss
+    lw  3   0   three  #block[36-39] is in the cache; load value in address 37 to reg3; read hit
+    lw  4   0   four  #block[36-39] is in the cache; load value in address 38 to reg4; read miss
+    lw  5   0   five  #block[52-55] is in the cache; load value in address 53 to reg5; read hit
+    lw  6   0   six  #block[52-55] is in the cache; load value in address 54 to reg6; read hit
     halt
-one .fill 1         #testing for "read hit and read miss" with fully asociative cache
+one .fill 1         
+two .fill 2
+three .fill 3
+four .fill 4
+five .fill 5
+six .fill 6			#testing for "read hit and read miss" with fully asociative cache
