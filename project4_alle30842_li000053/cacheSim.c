@@ -435,7 +435,7 @@ int cacheSystem(int address, stateType* state, enum access_type action, int writ
 			int blockWay = memToCache(address, state);
 			readValue = state->cacheArr[set][blockWay].data[blkOffset];
 		}
-		printCache(state); // REMOVE
+		printCache(state);
 		print_action(address, 1, cache_to_processor);
 		return readValue;
 	}
@@ -453,7 +453,7 @@ int cacheSystem(int address, stateType* state, enum access_type action, int writ
 			state->cacheArr[set][blockWay].data[blkOffset] = write_value;
 			state->cacheArr[set][blockWay].dirtyBit = dirty;
 		}
-		printCache(state); // REMOVE
+		printCache(state);
 		print_action(address, 1, processor_to_cache);
 		return -1;
 	}

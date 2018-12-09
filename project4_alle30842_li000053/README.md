@@ -12,6 +12,8 @@ Makefile - This is a makefile to be used with Make to build our project
 	Run comand [$make] to create our project
 	Run commad [$make clean] to clean the project for rebuilding
 
+Project_4_Overview.pdf - Overview document describing our project.
+
 
 README.me - This README file
 
