@@ -18,10 +18,10 @@ Project_4_Overview.pdf - Overview document describing our project.
 README.me - This README file
 
 Test Files (./testFiles/):
-        test1.as.4.2.1: test example from the project description, to ensure program operates correctly
-        test2.as.4.2.2: test to ensure the LRU functionality in the program operates currently.
-        test3.as.4.2.2: test to ensure the write-back functionality operates correctly.
-        test4.as.4.4.2: test to ensure the program "read hit" and "read miss" correctly.
-        test5.as.4.4.2: test to ensure the program "write hit" and "write miss" correctly.
-        test6.as.8.4.2: This test is verry simmilar to test 4 but it uses a block size of 8 to ensure that blocks are being placed correctly
-        test7.as.4.1.8: This is again verry simmilar to test 4 but it tests a fully asoiative cache rather than a blend aprotch
+        test1.as.4.2.1: example test providedd by the professor that tests simple reading and writing in a direct mapped cache.
+        test2.as.4.2.2: test to ensure the LRU functionality in the program operates correctly in set accociative cache.
+        test3.as.4.2.2: test to ensure the write-back functionality operates correctly in set accociative cache.
+        test4.as.4.4.2: test to ensure the program "read hit" and "read miss" correctly in set accociative cache.
+        test5.as.4.4.2: test to ensure the program "write hit" and "write miss" correctly in set accociative cache.
+        test6.as.8.4.2: This test is verry simmilar to test 4 but it uses a block size of 8 to ensure that blocks are being placed as expected.
+        test7.as.4.1.8: This is again verry simmilar to test 4 but it tests a fully asoiative cache rather than a blend aprotch.
